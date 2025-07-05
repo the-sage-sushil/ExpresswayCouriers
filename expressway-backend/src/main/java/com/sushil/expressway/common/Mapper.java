@@ -3,7 +3,9 @@ package com.sushil.expressway.common;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
+import com.sushil.expressway.entitys.Client;
 import com.sushil.expressway.entitys.Consignment;
+import com.sushil.expressway.models.ClientRequest;
 import com.sushil.expressway.models.ConsignmentRequest;
 
 import jakarta.persistence.EntityListeners;
@@ -14,18 +16,27 @@ public class Mapper {
 
     public Consignment toConsignment(ConsignmentRequest request) {
         return Consignment.builder()
-                .awbNUmber(request.getAwbNumber())
+                .trackingNumber(request.getTrackingNumber())
                 .chennalPatner(request.getChannelPartner())
                 .serviceType(request.getServiceType())
                 .senderName(request.getSenderName())
                 .senderContact(request.getSenderContact())
-                .senderAddress(request.getSenderAddress())
                 .receiverName(request.getReceiverName())
                 .receiverAddress(request.getReceiverAddress())
                 .weight(request.getWeight())
                 .dimensions(request.getDimensions())
-                .price(request.getPrice())
+                .totalAmount(request.getTotalAmount())
                 .status(request.getStatus())
+                .build();
+    }
+
+    public Client toClient(ClientRequest request) {
+        return Client.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .contactNumber(request.getPhoneNumber())
+                .address(request.getAddress())
+                .defaultPricePerKg(request.getDefaultPricePerKg())
                 .build();
     }
 
