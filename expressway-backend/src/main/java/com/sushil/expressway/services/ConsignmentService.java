@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sushil.expressway.common.Mapper;
 import com.sushil.expressway.entitys.Consignment;
