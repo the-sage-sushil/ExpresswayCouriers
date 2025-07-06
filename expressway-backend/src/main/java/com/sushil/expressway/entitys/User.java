@@ -21,11 +21,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Table(name = "users")
 @Getter
+@Setter
+@Builder
 @Entity
+@RequiredArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
@@ -39,6 +47,9 @@ public class User implements UserDetails, Principal {
     @Column(unique = true)
     private String email;
     private String password;
+
+
+
     private boolean accountLocked;
     private boolean enabled;
     @ManyToMany(fetch = FetchType.EAGER)

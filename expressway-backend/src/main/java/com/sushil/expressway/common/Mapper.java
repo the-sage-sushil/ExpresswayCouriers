@@ -14,6 +14,7 @@ import jakarta.persistence.EntityListeners;
 @EntityListeners(AuditingEntityListener.class)
 public class Mapper {
 
+
     public Consignment toConsignment(ConsignmentRequest request) {
         return Consignment.builder()
                 .trackingNumber(request.getTrackingNumber())
