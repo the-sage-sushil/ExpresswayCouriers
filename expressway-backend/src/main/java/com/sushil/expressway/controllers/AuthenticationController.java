@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sushil.expressway.models.AuthenticationRequest;
 import com.sushil.expressway.models.AuthenticationResponse;
-import com.sushil.expressway.models.UserRequest;
+import com.sushil.expressway.models.RegistrationRequest;
 import com.sushil.expressway.services.AuthenticationService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +31,7 @@ public class AuthenticationController {
 
     @PostMapping("register")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Integer> registerUser(@RequestBody UserRequest request) {
+    public ResponseEntity<Integer> registerUser(@RequestBody RegistrationRequest request) {
 
         int userId = authenticationService.registerUser(request);
         return ResponseEntity.ok(userId);

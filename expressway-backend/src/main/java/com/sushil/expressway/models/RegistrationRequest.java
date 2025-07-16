@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRequest {
+public class RegistrationRequest {
 
     @NotNull
     private String firstName;

@@ -13,7 +13,7 @@ import com.sushil.expressway.entitys.Token;
 import com.sushil.expressway.entitys.User;
 import com.sushil.expressway.models.AuthenticationRequest;
 import com.sushil.expressway.models.AuthenticationResponse;
-import com.sushil.expressway.models.UserRequest;
+import com.sushil.expressway.models.RegistrationRequest;
 import com.sushil.expressway.repositories.TokenRepository;
 import com.sushil.expressway.repositories.UserRepository;
 
@@ -30,7 +30,7 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
 
 
-    public Integer registerUser(UserRequest request) {
+    public Integer registerUser(RegistrationRequest request) {
 
         User user = User.builder()
                 .firstName(request.getFirstName())
