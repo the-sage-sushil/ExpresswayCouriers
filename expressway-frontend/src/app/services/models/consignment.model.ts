@@ -16,3 +16,8 @@ export interface Consignment {
   status: string;
   bookedBy: number;
 }
+
+
+export interface ConsignmentResponse {
+  consignments?: Consignment[];
+}

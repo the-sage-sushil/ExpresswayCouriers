@@ -14,16 +14,16 @@ export const routes: Routes = [
     path: 'activation',
     component: Activation
   },
-//   {
-//     path: 'books',
-//     loadChildren: () => import('./consignment/consignment-module').then(m => m.ConsignmentModule)
-//   },
+  {
+    path: 'consignments',
+    loadChildren: () => import('./modules/consignment/consignment-module').then(m => m.ConsignmentModule)
+  },
   {
     path: 'register',
     component: Register
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: '', redirectTo: 'consignments', pathMatch: 'full' },
+  { path: '**', redirectTo: 'consignments' }
 ];
 
 @NgModule({

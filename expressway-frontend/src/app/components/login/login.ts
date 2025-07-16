@@ -30,7 +30,7 @@ export class Login {
     this.authService.login(this.authRequest).subscribe({
       next: (res: AuthenticationResponse): void => {
         this.tokenService.token = res.token as string;
-        this.router.navigate(['books']);
+        this.router.navigate(['consignments']);
       },
       error: (err): void => {
         console.log(err);
