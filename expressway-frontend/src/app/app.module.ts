@@ -7,6 +7,7 @@ import { App } from './app';
 import { AppRoutingModule } from './app.routes';
 import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 import { CodeInputModule } from 'angular-code-input';
+import { ConsignmentRoutingModule } from './modules/consignment/consignment-routing.modules';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { CodeInputModule } from 'angular-code-input';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ConsignmentRoutingModule,
     CodeInputModule,
     FormsModule,
     App,

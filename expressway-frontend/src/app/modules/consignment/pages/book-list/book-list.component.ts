@@ -8,6 +8,7 @@ import { ConsignmentRequest } from '../../../../services/models/consignment-requ
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
+  standalone: false,
   styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnInit {

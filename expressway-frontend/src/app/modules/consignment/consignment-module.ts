@@ -10,11 +10,13 @@ import { ConsignmentRoutingModule } from './consignment-routing.modules';
 
 @NgModule({
   declarations: [
-    
+    MainComponent,
+    MenuComponent,
+    BookListComponent,
   ],
   imports: [
     CommonModule,
-    MainComponent,
+    RatingComponent,
     ConsignmentRoutingModule
   ]
 })

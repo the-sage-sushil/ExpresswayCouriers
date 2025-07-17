@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { MainComponent } from "./pages/main/main.component";
 import { BookListComponent } from "./pages/book-list/book-list.component";
 
-const routes: Routes = [
+const moduleRoutes: Routes = [
   {
     path: '',
     component: MainComponent,
@@ -17,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(moduleRoutes)],
   exports: [RouterModule]
 })
 export class ConsignmentRoutingModule { }
