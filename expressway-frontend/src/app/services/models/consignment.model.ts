@@ -1,7 +1,7 @@
 // Consignment interface for consignment entity
 export interface Consignment {
   id: number;
-  awbNUmber: string;
+  awbNumber: string;
   chennalPatner: string;
   serviceType: string;
   senderName: string;

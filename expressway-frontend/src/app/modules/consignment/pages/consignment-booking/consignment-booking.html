@@ -1,0 +1,311 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center mb-0">Create New Consignment</h3>
+        </div>
+        <div class="card-body">
+          
+          <div class="alert alert-success" *ngIf="successMessage" role="alert">
+            {{ successMessage }}
+          </div>
+          
+          <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+            {{ errorMessage }}
+          </div>
+
+          <form [formGroup]="consignmentForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Basic Information -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Basic Information</h5>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="trackingNumber" class="form-label">Tracking Number *</label>
+                <input
+                  formControlName="trackingNumber"
+                  type="text"
+                  class="form-control"
+                  id="trackingNumber"
+                  placeholder="Enter tracking number"
+                  [class.is-invalid]="trackingNumber?.invalid && trackingNumber?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="trackingNumber?.invalid && trackingNumber?.touched">
+                  <small *ngIf="trackingNumber?.errors?.['required']">Tracking number is required</small>
+                  <small *ngIf="trackingNumber?.errors?.['pattern']">Invalid format (10-20 alphanumeric characters)</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="channelPartner" class="form-label">Channel Partner *</label>
+                <input
+                  formControlName="channelPartner"
+                  type="text"
+                  class="form-control"
+                  id="channelPartner"
+                  placeholder="Enter channel partner"
+                  [class.is-invalid]="channelPartner?.invalid && channelPartner?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="channelPartner?.invalid && channelPartner?.touched">
+                  <small *ngIf="channelPartner?.errors?.['required']">Channel partner is required</small>
+                  <small *ngIf="channelPartner?.errors?.['minlength']">Minimum 2 characters required</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="serviceType" class="form-label">Service Type *</label>
+                <select
+                  formControlName="serviceType"
+                  class="form-select"
+                  id="serviceType"
+                  [class.is-invalid]="serviceType?.invalid && serviceType?.touched"
+                >
+                  <option value="">Select service type</option>
+                  <option *ngFor="let type of serviceTypes" [value]="type.value">
+                    {{ type.label }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="serviceType?.invalid && serviceType?.touched">
+                  <small>Service type is required</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="status" class="form-label">Status *</label>
+                <select
+                  formControlName="status"
+                  class="form-select"
+                  id="status"
+                  [class.is-invalid]="status?.invalid && status?.touched"
+                >
+                  <option *ngFor="let stat of statusOptions" [value]="stat.value">
+                    {{ stat.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Sender Information -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Sender Information</h5>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="senderName" class="form-label">Sender Name *</label>
+                <input
+                  formControlName="senderName"
+                  type="text"
+                  class="form-control"
+                  id="senderName"
+                  placeholder="Enter sender name"
+                  [class.is-invalid]="senderName?.invalid && senderName?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="senderName?.invalid && senderName?.touched">
+                  <small *ngIf="senderName?.errors?.['required']">Sender name is required</small>
+                  <small *ngIf="senderName?.errors?.['minlength']">Minimum 2 characters required</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="senderContact" class="form-label">Sender Contact *</label>
+                <input
+                  formControlName="senderContact"
+                  type="tel"
+                  class="form-control"
+                  id="senderContact"
+                  placeholder="Enter 10-digit phone number"
+                  [class.is-invalid]="senderContact?.invalid && senderContact?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="senderContact?.invalid && senderContact?.touched">
+                  <small *ngIf="senderContact?.errors?.['required']">Contact number is required</small>
+                  <small *ngIf="senderContact?.errors?.['pattern']">Enter valid 10-digit number</small>
+                </div>
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="senderAddress" class="form-label">Sender Address *</label>
+                <textarea
+                  formControlName="senderAddress"
+                  class="form-control"
+                  id="senderAddress"
+                  rows="3"
+                  placeholder="Enter complete sender address"
+                  [class.is-invalid]="senderAddress?.invalid && senderAddress?.touched"
+                ></textarea>
+                <div class="invalid-feedback" *ngIf="senderAddress?.invalid && senderAddress?.touched">
+                  <small *ngIf="senderAddress?.errors?.['required']">Sender address is required</small>
+                  <small *ngIf="senderAddress?.errors?.['minlength']">Minimum 10 characters required</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Receiver Information -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Receiver Information</h5>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="receiverName" class="form-label">Receiver Name *</label>
+                <input
+                  formControlName="receiverName"
+                  type="text"
+                  class="form-control"
+                  id="receiverName"
+                  placeholder="Enter receiver name"
+                  [class.is-invalid]="receiverName?.invalid && receiverName?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="receiverName?.invalid && receiverName?.touched">
+                  <small *ngIf="receiverName?.errors?.['required']">Receiver name is required</small>
+                  <small *ngIf="receiverName?.errors?.['minlength']">Minimum 2 characters required</small>
+                </div>
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="receiverAddress" class="form-label">Receiver Address *</label>
+                <textarea
+                  formControlName="receiverAddress"
+                  class="form-control"
+                  id="receiverAddress"
+                  rows="3"
+                  placeholder="Enter complete receiver address"
+                  [class.is-invalid]="receiverAddress?.invalid && receiverAddress?.touched"
+                ></textarea>
+                <div class="invalid-feedback" *ngIf="receiverAddress?.invalid && receiverAddress?.touched">
+                  <small *ngIf="receiverAddress?.errors?.['required']">Receiver address is required</small>
+                  <small *ngIf="receiverAddress?.errors?.['minlength']">Minimum 10 characters required</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Package Details -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Package Details</h5>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="weight" class="form-label">Weight (kg) *</label>
+                <input
+                  formControlName="weight"
+                  type="number"
+                  class="form-control"
+                  id="weight"
+                  placeholder="Enter weight in kg"
+                  step="0.1"
+                  [class.is-invalid]="weight?.invalid && weight?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="weight?.invalid && weight?.touched">
+                  <small *ngIf="weight?.errors?.['required']">Weight is required</small>
+                  <small *ngIf="weight?.errors?.['min']">Minimum weight is 0.1 kg</small>
+                  <small *ngIf="weight?.errors?.['max']">Maximum weight is 50 kg</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="dimensions" class="form-label">Dimensions (LxWxH cm) *</label>
+                <input
+                  formControlName="dimensions"
+                  type="text"
+                  class="form-control"
+                  id="dimensions"
+                  placeholder="e.g., 30x20x15"
+                  [class.is-invalid]="dimensions?.invalid && dimensions?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="dimensions?.invalid && dimensions?.touched">
+                  <small *ngIf="dimensions?.errors?.['required']">Dimensions are required</small>
+                  <small *ngIf="dimensions?.errors?.['pattern']">Format: LengthxWidthxHeight (e.g., 30x20x15)</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Client Information -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Client Information</h5>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label for="client" class="form-label">Client *</label>
+                <input
+                  formControlName="client"
+                  type="number"
+                  class="form-control"
+                  id="client"
+                  placeholder="Enter client number"
+                  [class.is-invalid]="client?.invalid && client?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="client?.invalid && client?.touched">
+                  <small *ngIf="client?.errors?.['required']">Client number is required</small>
+                  <small *ngIf="client?.errors?.['min']">Must be greater than 0</small>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="client_id" class="form-label">Client ID *</label>
+                <input
+                  formControlName="client_id"
+                  type="number"
+                  class="form-control"
+                  id="client_id"
+                  placeholder="Enter client ID"
+                  [class.is-invalid]="client_id?.invalid && client_id?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="client_id?.invalid && client_id?.touched">
+                  <small *ngIf="client_id?.errors?.['required']">Client ID is required</small>
+                  <small *ngIf="client_id?.errors?.['min']">Must be greater than 0</small>
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="totalAmount" class="form-label">Total Amount *</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    formControlName="totalAmount"
+                    type="number"
+                    class="form-control"
+                    id="totalAmount"
+                    placeholder="0.00"
+                    step="0.01"
+                    [class.is-invalid]="totalAmount?.invalid && totalAmount?.touched"
+                  />
+                </div>
+                <div class="invalid-feedback" *ngIf="totalAmount?.invalid && totalAmount?.touched">
+                  <small *ngIf="totalAmount?.errors?.['required']">Total amount is required</small>
+                  <small *ngIf="totalAmount?.errors?.['min']">Amount must be greater than 0</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row">
+              <div class="col-12 d-flex justify-content-end">
+                <button 
+                  type="button" 
+                  class="btn btn-secondary me-2"
+                  (click)="consignmentForm.reset()"
+                  [disabled]="isLoading"
+                >
+                  Reset
+                </button>
+                <button 
+                  type="submit" 
+                  class="btn btn-primary"
+                  [disabled]="isLoading || consignmentForm.invalid"
+                >
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                  {{ isLoading ? 'Creating...' : 'Create Consignment' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,7 +36,7 @@ public class Client {
     private String contactPerson;
     private String contactNumber;
     
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = true)
     private Double defaultPricePerKg;  // or whatever pricing schema you have
 
     // optional fields

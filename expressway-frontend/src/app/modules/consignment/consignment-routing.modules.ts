@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { MainComponent } from "./pages/main/main.component";
-import { BookListComponent } from "./pages/book-list/book-list.component";
+import { ConsignmentBooking } from "./pages/consignment-booking/consignment-booking";
+import { ConsignmentListComponent } from "./pages/consignment-list/consignment-list.component";
 
 const moduleRoutes: Routes = [
   {
@@ -10,7 +11,11 @@ const moduleRoutes: Routes = [
     children: [
       {
         path: '',
-        component: BookListComponent
+        component: ConsignmentListComponent
+      },
+      {
+        path: 'booking',
+        component: ConsignmentBooking // Assuming the same component is used for booking
       }
     ]
   }

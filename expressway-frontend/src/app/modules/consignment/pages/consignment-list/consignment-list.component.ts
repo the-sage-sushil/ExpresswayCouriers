@@ -6,12 +6,12 @@ import { ConsignmentRequest } from '../../../../services/models/consignment-requ
 
 
 @Component({
-  selector: 'app-book-list',
-  templateUrl: './book-list.component.html',
+  selector: 'app-consignment-list',
+  templateUrl: './consignment-list.component.html',
   standalone: false,
-  styleUrls: ['./book-list.component.scss']
+  styleUrls: ['./consignment-list.component.scss']
 })
-export class BookListComponent implements OnInit {
+export class ConsignmentListComponent implements OnInit {
   size: number | undefined;
   page: number | undefined = 0;
 

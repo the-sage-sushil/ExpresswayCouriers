@@ -1,7 +1,10 @@
 // Client request for creating/updating a client
 export interface ClientRequest {
   name: string;
+  phone: number;
   email: string;
+  defaultPricePerKg: number;
+  address: string;
   // Add other fields as needed
 }
 
