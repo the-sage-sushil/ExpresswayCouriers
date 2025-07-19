@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ConsignmentService } from '../../../../services/consignment.service';
-import { ConsignmentRequest } from '../../../../services/models/consignment-request.model';
-import { Consignment } from '../../../../services/models/consignment.model';
+import { ConsignmentService } from '../../services/consignment.service';
+import { ConsignmentRequest } from '../../services/models/consignment-request.model';
+import { Consignment } from '../../services/models/consignment.model';
 import { CommonModule } from '@angular/common';
 
 @Component({

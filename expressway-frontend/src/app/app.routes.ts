@@ -4,24 +4,31 @@ import { RouterModule, Routes } from '@angular/router';
 import { Login } from './components/login/login';
 import { Activation } from './components/register/activation/activation';
 import { Register } from './components/register/register';
+import { ConsignmentList } from './components/consignment-list/consignment-list.component';
+import { ConsignmentBooking } from './components/consignment-booking/consignment-booking';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    component: Login
+    path: 'register',
+    component: Register
   },
   {
     path: 'activation',
     component: Activation
   },
   {
-    path: 'consignments',
-    loadChildren: () => import('./modules/consignment/consignment-module').then(m => m.ConsignmentModule)
+    path: 'login',
+    component: Login
   },
   {
-    path: 'register',
-    component: Register
+    path: 'consignments',
+    component: ConsignmentList
   },
+  {
+    path: 'booking',
+    component: ConsignmentBooking
+  },
+
   { path: '', redirectTo: 'consignments', pathMatch: 'full' },
   { path: '**', redirectTo: 'consignments' }
 ];
