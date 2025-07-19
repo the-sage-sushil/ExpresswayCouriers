@@ -6,6 +6,9 @@ import { Activation } from './components/register/activation/activation';
 import { Register } from './components/register/register';
 import { ConsignmentList } from './components/consignment-list/consignment-list.component';
 import { ConsignmentBooking } from './components/consignment-booking/consignment-booking';
+import { ClientList } from './components/client/client';
+import { ClientCreate } from './components/client/create/client-create';
+import { ClientEdit } from './components/client/edit/client-edit';
 
 export const routes: Routes = [
   {
@@ -27,6 +30,17 @@ export const routes: Routes = [
   {
     path: 'booking',
     component: ConsignmentBooking
+  },
+  {
+    path: 'client',
+    component: ClientList
+  },
+  {
+    path: 'client/new',
+    component: ClientCreate
+  },
+  { path: 'clients/edit/:id',
+    component: ClientEdit 
   },
 
   { path: '', redirectTo: 'consignments', pathMatch: 'full' },

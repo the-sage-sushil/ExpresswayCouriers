@@ -36,8 +36,14 @@ public class Client {
     private String contactPerson;
     private String contactNumber;
     
-    @Column(unique = false, nullable = true)
-    private Double defaultPricePerKg;  // or whatever pricing schema you have
+    @Column(nullable = false)
+    private Double standardPricePerKg;
+    
+    @Column(nullable = false)
+    private Double premiumPricePerKg;
+    
+    @Column(nullable = false)
+    private Double surfacePricePerKg;
 
     // optional fields
     private String address;

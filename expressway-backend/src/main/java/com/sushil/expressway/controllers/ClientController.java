@@ -1,7 +1,10 @@
 package com.sushil.expressway.controllers;
 
+import java.util.List;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @RequestMapping("client")
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -32,10 +36,22 @@ public class ClientController {
         return ResponseEntity.ok(clientService.save(request));
     }
 
+    @GetMapping()
+    public ResponseEntity<List<Client>> getAllClients() {
+        return ResponseEntity.ok(clientService.getAllClients());
+    }
+
     @GetMapping("/{clientId}")
     public ResponseEntity<Client> getMethodName(@PathVariable("clientId") Long id) {
         return ResponseEntity.ok(clientService.getClientById(id));
     }
+
+    @DeleteMapping("/{clientId}")
+    public ResponseEntity<?> deleteClient(@PathVariable("clientId") Long id) {
+        clientService.deleteClient(id);
+        return ResponseEntity.ok("Client deleted successfully");
+    }
+    
     
     
     

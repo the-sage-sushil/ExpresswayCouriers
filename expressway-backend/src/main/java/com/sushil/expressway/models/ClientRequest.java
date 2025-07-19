@@ -9,21 +9,25 @@ import lombok.Setter;
 @Setter
 public class ClientRequest {
 
-    @NotNull
     @NotEmpty
     private String name;
-    
-    @NotNull
+
     @NotEmpty
     private String email;
 
-    @NotNull
-    @NotEmpty
-    private String phoneNumber;
+    private String contactPerson;
 
-    @NotNull
-    private Double defaultPricePerKg; // or whatever pricing schema you have
+    @NotEmpty
+    private String contactNumber;
+
+    @NotNull(message = "Standard price per kg is required")
+    private Double standardPricePerKg;
+
+    @NotNull(message = "Premium price per kg is required")
+    private Double premiumPricePerKg;
+
+    @NotNull(message = "Surface price per kg is required")
+    private Double surfacePricePerKg;
 
     private String address;
-
 }

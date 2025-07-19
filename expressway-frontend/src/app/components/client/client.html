@@ -1,1 +1,40 @@
-<p>client works!</p>
+<!-- src/app/clients-list/clients-list.component.html -->
+<div>
+  <h1>Clients</h1>
+  <button (click)="addClient()" class="btn btn-primary mb-2">Add New Client</button>
+
+  <table class="table table-striped" *ngIf="clients.length > 0; else noClients">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact Number</th>
+        <th>Standard Price</th>
+        <th>Premium Price</th>
+        <th>Surface Price</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of clients">
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.contactNumber }}</td>
+        <td>{{ client.standardPricePerKg }}</td>
+        <td>{{ client.premiumPricePerKg }}</td>
+        <td>{{ client.surfacePricePerKg }}</td>
+        <td>{{ client.address }}</td>
+        <td>
+          <button class="btn btn-sm btn-info" (click)="editClient(client)">Edit</button>
+          <button class="btn btn-sm btn-danger ml-2" (click)="deleteClient(client)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noClients>
+    <div *ngIf="!loading">No clients found.</div>
+    <div *ngIf="loading">Loading...</div>
+  </ng-template>
+</div>

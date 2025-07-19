@@ -35,9 +35,11 @@ public class Mapper {
         return Client.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .contactNumber(request.getPhoneNumber())
+                .contactNumber(request.getContactNumber())
                 .address(request.getAddress())
-                .defaultPricePerKg(request.getDefaultPricePerKg())
+                .standardPricePerKg(request.getStandardPricePerKg())
+                .premiumPricePerKg(request.getPremiumPricePerKg())
+                .surfacePricePerKg(request.getSurfacePricePerKg())
                 .build();
     }
 

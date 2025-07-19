@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
-  private apiUrl = environment.apiBaseUrl + 'clients/';
+  private apiUrl = environment.apiBaseUrl + 'client';
 
   constructor(private http: HttpClient) {}
 
@@ -16,5 +16,13 @@ export class ClientService {
 
   getClientById(clientId: number): Observable<Client> {
     return this.http.get<Client>(`${this.apiUrl}${clientId}`, { withCredentials: true });
+  }
+
+  getAllClients(): Observable<Client[]> {
+    return this.http.get<Client[]>(this.apiUrl, { withCredentials: true });
+  }
+
+  deleteClient(clientId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${clientId}`, { withCredentials: true });
   }
 }

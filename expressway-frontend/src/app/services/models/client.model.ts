@@ -1,17 +1,21 @@
 // Client request for creating/updating a client
 export interface ClientRequest {
   name: string;
-  phone: number;
+  contactNumber: string;
   email: string;
-  defaultPricePerKg: number;
+  standardPricePerKg: number;
+  premiumPricePerKg: number;
+  surfacePricePerKg: number;
   address: string;
-  // Add other fields as needed
 }
 
-// Client entity
 export interface Client {
   id: number;
   name: string;
+  contactNumber: string;
   email: string;
-  // Add other fields as needed
+  standardPricePerKg: number;
+  premiumPricePerKg: number;
+  surfacePricePerKg: number;
+  address: string;
 }
