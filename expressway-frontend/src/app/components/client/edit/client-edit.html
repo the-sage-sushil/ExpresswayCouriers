@@ -1,1 +1,71 @@
-<p>client-edit works!</p>
+<div class="container mt-4">
+  <h2>Edit Client</h2>
+  <form [formGroup]="clientForm" (ngSubmit)="submit()">
+    <div *ngIf="loading" class="mb-3">
+      <span class="spinner-border spinner-border-sm"></span>
+      Loading data...
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <ng-container *ngIf="!loading">
+      <div class="mb-3">
+        <label>Name*</label>
+        <input type="text" class="form-control" formControlName="name" />
+        <div *ngIf="clientForm.get('name')?.touched && clientForm.get('name')?.invalid" class="text-danger">
+          Name is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Email*</label>
+        <input type="email" class="form-control" formControlName="email" />
+        <div *ngIf="clientForm.get('email')?.touched && clientForm.get('email')?.invalid" class="text-danger">
+          Valid email is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Contact Person</label>
+        <input type="text" class="form-control" formControlName="contactPerson" />
+      </div>
+      <div class="mb-3">
+        <label>Contact Number*</label>
+        <input type="text" class="form-control" formControlName="contactNumber" />
+        <div *ngIf="clientForm.get('contactNumber')?.touched && clientForm.get('contactNumber')?.invalid" class="text-danger">
+          Contact Number is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Standard Price Per Kg*</label>
+        <input type="number" class="form-control" formControlName="standardPricePerKg" min="0" />
+        <div *ngIf="clientForm.get('standardPricePerKg')?.touched && clientForm.get('standardPricePerKg')?.invalid" class="text-danger">
+          Standard Price is required and must be >= 0.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Premium Price Per Kg*</label>
+        <input type="number" class="form-control" formControlName="premiumPricePerKg" min="0" />
+        <div *ngIf="clientForm.get('premiumPricePerKg')?.touched && clientForm.get('premiumPricePerKg')?.invalid" class="text-danger">
+          Premium Price is required and must be >= 0.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Surface Price Per Kg*</label>
+        <input type="number" class="form-control" formControlName="surfacePricePerKg" min="0" />
+        <div *ngIf="clientForm.get('surfacePricePerKg')?.touched && clientForm.get('surfacePricePerKg')?.invalid" class="text-danger">
+          Surface Price is required and must be >= 0.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Address*</label>
+        <input type="text" class="form-control" formControlName="address" />
+        <div *ngIf="clientForm.get('address')?.touched && clientForm.get('address')?.invalid" class="text-danger">
+          Address is required.
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="loading || clientForm.invalid">
+        {{ loading ? 'Saving...' : 'Update Client' }}
+      </button>
+      <a routerLink="/client" class="btn btn-secondary ms-2">Cancel</a>
+    </ng-container>
+  </form>
+</div>

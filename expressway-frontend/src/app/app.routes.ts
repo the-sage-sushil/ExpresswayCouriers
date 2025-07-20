@@ -39,12 +39,12 @@ export const routes: Routes = [
     path: 'client/new',
     component: ClientCreate
   },
-  { path: 'clients/edit/:id',
+  { path: 'client/edit/:id',
     component: ClientEdit 
   },
 
-  { path: '', redirectTo: 'consignments', pathMatch: 'full' },
-  { path: '**', redirectTo: 'consignments' }
+  { path: '', redirectTo: 'client', pathMatch: 'full' },
+  { path: '**', redirectTo: 'client' }
 ];
 
 @NgModule({

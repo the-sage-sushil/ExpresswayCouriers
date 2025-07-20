@@ -1,6 +1,7 @@
 package com.sushil.expressway.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,26 @@ public class ClientService {
         Client client = mapper.toClient(request);
         return clientRepository.save(client).getId();
     }
-
+    
     public Client getClientById(Long id) {
         return clientRepository.findById(id.longValue())
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+        .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
     }
-
+    
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
-
+    
     public ResponseEntity<String> deleteClient(Long id) {
         clientRepository.deleteById(id);
         return ResponseEntity.ok("Client deleted successfully");
+    }
+    
+    public Long updateClient(Long id, ClientRequest request) {
+
+        Client existingClient = clientRepository.findById(id.longValue()) .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+        existingClient = mapper.toClient(request);
+        existingClient.setId(id);
+        return clientRepository.save(existingClient).getId();
     }
 }

@@ -70,7 +70,7 @@ public class BeansConfig {
         config.setAllowedMethods(Arrays.asList(
         "GET",
             "POST",
-            "PUL",
+            "PUT",
             "PATCH",
             "DELETE"
         ));

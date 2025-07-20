@@ -39,16 +39,19 @@ export class ClientList  implements OnInit {
   }
 
   editClient(client: Client): void {
+    debugger;
     this.router.navigate(['/client/edit', client.id]);
-    alert('Edit ' + client.name);
   }
 
   deleteClient(client: Client): void {
     if (confirm(`Are you sure to delete client "${client.name}"?`)) {
+      debugger;
       this.clientService.deleteClient(client.id).subscribe(() => {
+        debugger;
         this.fetchClients();
       });
     }
+    this.router.navigate(['/client']);
   }
 
   addClient(): void {

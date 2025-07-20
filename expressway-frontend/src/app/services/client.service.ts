@@ -14,8 +14,12 @@ export class ClientService {
     return this.http.post<Client>(`${this.apiUrl}`, request, { withCredentials: true });
   }
 
+  updateClient(id: number ,request: ClientRequest): Observable<Client> {
+    return this.http.put<Client>(`${this.apiUrl}/${id}`, request, { withCredentials: true });
+  }
+
   getClientById(clientId: number): Observable<Client> {
-    return this.http.get<Client>(`${this.apiUrl}${clientId}`, { withCredentials: true });
+    return this.http.get<Client>(`${this.apiUrl}/${clientId}`, { withCredentials: true });
   }
 
   getAllClients(): Observable<Client[]> {
@@ -23,6 +27,6 @@ export class ClientService {
   }
 
   deleteClient(clientId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${clientId}`, { withCredentials: true });
+    return this.http.delete<void>(`${this.apiUrl}/${clientId}`, { withCredentials: true });
   }
 }

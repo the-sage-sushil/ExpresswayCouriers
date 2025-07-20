@@ -36,6 +36,7 @@ public class Mapper {
                 .name(request.getName())
                 .email(request.getEmail())
                 .contactNumber(request.getContactNumber())
+                .contactPerson(request.getContactPerson())
                 .address(request.getAddress())
                 .standardPricePerKg(request.getStandardPricePerKg())
                 .premiumPricePerKg(request.getPremiumPricePerKg())
