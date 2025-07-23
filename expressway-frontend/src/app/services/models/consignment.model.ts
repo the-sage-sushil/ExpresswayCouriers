@@ -1,7 +1,9 @@
 // Consignment interface for consignment entity
 export interface Consignment {
   id: number;
-  awbNumber: string;
+  bookingDate: string;
+  bookedBy: number;
+  trackingNumber: string;
   chennalPatner: string;
   serviceType: string;
   senderName: string;
@@ -9,15 +11,13 @@ export interface Consignment {
   senderAddress: string;
   receiverName: string;
   receiverAddress: string;
-  bookingDate: string;
+  receiverContact: string;
   weight: number;
   dimensions: string;
-  price: number;
-  status: string;
-  bookedBy: number;
-}
-
-
-export interface ConsignmentResponse {
-  consignments?: Consignment[];
+  numberOfPackages: number,
+  paymentMode : string,
+  totalAmount: number,
+  expectedDeliveryDate : Date
+  actualDeliveryDate : Date
+  status : string
 }

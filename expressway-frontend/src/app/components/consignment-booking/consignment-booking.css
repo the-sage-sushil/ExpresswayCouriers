@@ -1,0 +1,114 @@
+
+/* General Container */
+.container-fluid {
+  padding: 2rem;
+  background-color: #f7f9fc;
+}
+
+/* Card Styling */
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: none;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Headings for Section Titles */
+h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-top: 1rem;
+}
+
+/* Label Styling */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Inputs, Selects */
+.form-control,
+.form-select {
+  border-radius: 0.4rem;
+  box-shadow: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+/* ng-select overrides */
+ng-select ::ng-deep .ng-select-container {
+  border-radius: 0.4rem;
+  min-height: 38px;
+}
+
+ng-select ::ng-deep .ng-select-container:focus-within {
+  box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+/* Button Styling */
+button.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.4rem;
+  font-weight: 500;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+button.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+button.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+button.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Feedback Styling */
+.invalid-feedback small {
+  color: #dc3545;
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 0.4rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: #e9f9ec;
+  color: #198754;
+  border: 1px solid #c6eedc;
+}
+
+.alert-danger {
+  background-color: #fdecea;
+  color: #dc3545;
+  border: 1px solid #f5c6cb;
+}

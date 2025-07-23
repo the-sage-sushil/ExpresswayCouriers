@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConsignmentRequest } from './models/consignment-request.model';
-import { Consignment, ConsignmentResponse } from './models/consignment.model';
+import { Consignment } from './models/consignment.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -15,8 +15,8 @@ export class ConsignmentService {
     return this.http.post<Consignment>(`${this.apiUrl}booking`, request, { withCredentials: true });
   }
 
-  getBookings(): Observable<ConsignmentResponse> {
-    return this.http.get<ConsignmentResponse>(`${this.apiUrl}bookings`, { withCredentials: true });
+  getBookings(): Observable<Consignment[]> {
+    return this.http.get<Consignment[]>(`${this.apiUrl}bookings`, { withCredentials: true });
   }
 
   getConsignmentByClientId(clientId: number): Observable<Consignment[]> {

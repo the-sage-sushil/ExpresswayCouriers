@@ -1,5 +1,51 @@
-<hr>
-<div class="d-flex justify-content-start gap-2 flex-wrap">
-    <!-- <app-book-card [book]="book"*ngFor="let book of bookResponse.content">{{book.title}}</app-book-card> -->
-     <p>Consignment record</p>
+<div class="container mt-4">
+  <h2>Consignment List</h2>
+
+  <div *ngIf="!bookResponse || bookResponse?.length" class="alert alert-info">
+    No consignments found.
+  </div>
+
+  <div *ngIf="bookResponse">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Tracking Number</th>
+          <th>Channel Partner</th>
+          <th>Service Type</th>
+          <th>Sender</th>
+          <th>Receiver</th>
+          <th>Weight (kg)</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Booking Date</th>
+          <!-- Add more columns if needed -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let consignment of bookResponse">
+          <td>{{ consignment.trackingNumber }}</td>
+          <td>{{ consignment.chennalPatner }}</td>
+          <td>{{ consignment.serviceType }}</td>
+          <td>
+            {{ consignment.senderName }}<br />
+            <small>{{ consignment.senderContact }}</small>
+          </td>
+          <td>
+            {{ consignment.receiverName }}<br />
+            <small>{{ consignment.receiverContact || 'N/A' }}</small>
+          </td>
+          <td>{{ consignment.weight }}</td>
+          <td>{{ consignment.totalAmount | currency:'INR' }}</td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-warning text-dark': consignment.status === 'pending',
+              'badge bg-success': consignment.status === 'delivered',
+              'badge bg-secondary': consignment.status !== 'pending' && consignment.status !== 'delivered'
+            }">{{ consignment.status | titlecase }}</span>
+          </td>
+          <td>{{ consignment.bookingDate | date:'mediumDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

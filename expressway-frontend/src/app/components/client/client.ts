@@ -18,7 +18,7 @@ export class ClientList  implements OnInit {
   constructor(private clientService: ClientService) {}
 
   ngOnInit(): void {
-    this.fetchClients();
+    this.fetchClients();   
   }
 
   fetchClients(): void {
@@ -26,10 +26,6 @@ export class ClientList  implements OnInit {
     this.clientService.getAllClients().subscribe({
       next: (data) => {
         this.clients = data;
-        console.log(this.clients[0].contactNumber);
-        console.log(this.clients[1].contactNumber);
-        console.log(this.clients[2].contactNumber);
-        this.loading = false;
       },
       error: (err) => {
         this.loading = false;

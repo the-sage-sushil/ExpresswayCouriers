@@ -7,6 +7,7 @@ import { App } from './app';
 import { AppRoutingModule } from './app.routes';
 import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 import { CodeInputModule } from 'angular-code-input';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CodeInputModule } from 'angular-code-input';
     AppRoutingModule,
     CodeInputModule,
     FormsModule,
+    NgSelectModule,
     ReactiveFormsModule,
     App,
   ],

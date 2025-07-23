@@ -4,10 +4,13 @@ import { ConsignmentService } from '../../services/consignment.service';
 import { ConsignmentRequest } from '../../services/models/consignment-request.model';
 import { Consignment } from '../../services/models/consignment.model';
 import { CommonModule } from '@angular/common';
+import { Client } from '../../services/models/client.model';
+import { ClientService } from '../../services/client.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-consignment-booking',
-  imports: [ReactiveFormsModule,CommonModule,FormsModule],
+  imports: [ReactiveFormsModule,CommonModule,FormsModule,NgSelectModule],
   templateUrl: './consignment-booking.html',
   styleUrl: './consignment-booking.css'
 })
@@ -16,6 +19,8 @@ export class ConsignmentBooking {
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+
+  clients: Client[] = [];
 
   serviceTypes = [
     { value: 'standard', label: 'Standard Delivery' },
@@ -32,10 +37,12 @@ export class ConsignmentBooking {
 
   constructor(
     private fb: FormBuilder,
-    private consignmentService: ConsignmentService
+    private consignmentService: ConsignmentService,
+    private clientService: ClientService,
   ) {}
 
   ngOnInit(): void {
+    this.fetchClients();
     this.initializeForm();
   }
 
@@ -72,13 +79,27 @@ export class ConsignmentBooking {
 
     this.consignmentService.saveConsignment(consignmentData).subscribe({
       next: (response: Consignment) => {
-        this.successMessage = `Consignment created successfully! Tracking ID: ${response.awbNumber}`;
+        this.successMessage = `Consignment created successfully! Tracking ID: ${response.trackingNumber}`;
         this.consignmentForm.reset();
         this.isLoading = false;
       },
       error: (error) => {
         this.errorMessage = error.message || 'Failed to create consignment. Please try again.';
         this.isLoading = false;
+      }
+    });
+  }
+
+    fetchClients(): void {
+    this.clientService.getAllClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+        console.log(this.clients[0].contactNumber);
+        console.log(this.clients[1].contactNumber);
+        console.log(this.clients[2].contactNumber);
+      },
+      error: (err) => {
+        // handle error
       }
     });
   }
