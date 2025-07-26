@@ -1,3 +1,5 @@
+import { Client } from "./client.model";
+
 // ConsignmentRequest interface for consignment creation
 export interface ConsignmentRequest {
   trackingNumber: string;
@@ -10,7 +12,7 @@ export interface ConsignmentRequest {
   receiverAddress: string;
   weight: number;
   dimensions: string;
-  client: number;
+  client?: Client;
   client_id: number;
   totalAmount: number;
   status: string;

@@ -129,15 +129,16 @@
 
               <div class="col-md-6 mb-3">
                 <label for="senderName">Sender Name</label>
-                  <ng-select
-                    [items]="clients"
-                    bindLabel="name"
-                    bindValue="clint"
-                    [searchable]="true"
-                    [clearable]="true"
-                    formControlName="senderName"
-                  >
-                  </ng-select>
+                <ng-select
+                  id="senderName"
+                  formControlName="senderName"
+                  [items]="clients"
+                  bindLabel="name"
+                  [addTag]="true"
+                  placeholder="Select or type sender name"
+                  (change)="onSenderNameChange($event)">
+                  <ng-template ng-option-tmp let-item="item">{{ item.name }}</ng-template>
+                </ng-select>
 
                   <div
                     *ngIf="senderName?.invalid && senderName?.touched"

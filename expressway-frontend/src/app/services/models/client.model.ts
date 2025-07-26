@@ -19,3 +19,12 @@ export interface Client {
   surfacePricePerKg: number;
   address: string;
 }
+export interface PricingItem {
+  label: string;
+  controlName: string;
+}
+
+export interface PricingCategory {
+  label: string;
+  items: PricingItem[];
+}

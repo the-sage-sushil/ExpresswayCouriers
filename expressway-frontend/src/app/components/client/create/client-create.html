@@ -1,64 +1,142 @@
-<!-- src/app/create-client/create-client.component.html -->
-<div class="container mt-4">
-  <h2>Create New Client</h2>
-  <form [formGroup]="clientForm" (ngSubmit)="submit()">
-    <div class="mb-3">
-      <label>Name*</label>
-      <input type="text" class="form-control" formControlName="name" />
-      <div *ngIf="clientForm.get('name')?.touched && clientForm.get('name')?.invalid" class="text-danger">
-        Name is required.
+<div class="full-page-wrapper">
+  <div class="container create-client-form">
+    <h2>Create New Client</h2>
+
+    <form [formGroup]="clientForm" (ngSubmit)="submit()">
+      <div class="pricing-section mt-4">
+        <h4 class="mb-3">Client Details</h4>
+          <div class="mb-4">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label>Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('name')?.touched &&
+                  clientForm.get('name')?.invalid
+                "
+                class="text-danger"
+              >
+                Client name is required and must be ≥ 0.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Email</label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('email')?.touched &&
+                  clientForm.get('email')?.invalid
+                "
+                class="text-danger"
+              >
+                Client Email is required and must be ≥ 0.
+              </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+              <label>ContactNumber</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="contactNumber"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('contactNumber')?.touched &&
+                  clientForm.get('contactNumber')?.invalid
+                "
+                class="text-danger"
+              >
+                Client contactNumber is required and must be ≥ 0.
+              </div>
+            </div>
+
+            
+            <div class="col-md-8 textarea">
+              <label>Address</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="address"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('address')?.touched &&
+                  clientForm.get('address')?.invalid
+                "
+                class="text-danger"
+              >
+                Client address is required and must be ≥ 0.
+              </div>
+            </div>
+            
+            <div class="col-md-4 textarea">
+              <label>ContactPerson</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="contactPerson"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('contactPerson')?.touched &&
+                  clientForm.get('contactPerson')?.invalid
+                "
+                class="text-danger"
+              >
+                Client contactPerson is required and must be ≥ 0.
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="pricing-section mt-4">
       </div>
-    </div>
-    <div class="mb-3">
-      <label>Email*</label>
-      <input type="email" class="form-control" formControlName="email" />
-      <div *ngIf="clientForm.get('email')?.touched && clientForm.get('email')?.invalid" class="text-danger">
-        Valid email is required.
+        <h4 class="mb-3">Pricing Details</h4>
+        <div *ngFor="let category of pricingCategories" class="mb-4">
+          <div class="category-title">{{ category.label }}</div>
+          <div class="row">
+            <div class="col-md-4 mb-3" *ngFor="let item of category.items">
+              <label>{{ item.label }}</label>
+              <input
+                type="number"
+                class="form-control"
+                [formControlName]="item.controlName"
+              />
+              <div
+                *ngIf="
+                  clientForm.get(item.controlName)?.touched &&
+                  clientForm.get(item.controlName)?.invalid
+                "
+                class="text-danger"
+              >
+                {{ item.label }} is required and must be ≥ 0.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label>Contact Person</label>
-      <input type="text" class="form-control" formControlName="contactPerson" />
-    </div>
-    <div class="mb-3">
-      <label>Contact Number*</label>
-      <input type="text" class="form-control" formControlName="contactNumber" />
-      <div *ngIf="clientForm.get('contactNumber')?.touched && clientForm.get('contactNumber')?.invalid" class="text-danger">
-        Contact Number is required.
+
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button
+          class="btn btn-success"
+          type="submit"
+          [disabled]="loading || clientForm.invalid"
+        >
+          {{ loading ? "Submitting..." : "Create Client" }}
+        </button>
+        <a routerLink="/client" class="btn btn-secondary">Cancel</a>
       </div>
-    </div>
-    <div class="mb-3">
-      <label>Standard Price Per Kg*</label>
-      <input type="number" class="form-control" formControlName="standardPricePerKg" />
-      <div *ngIf="clientForm.get('standardPricePerKg')?.touched && clientForm.get('standardPricePerKg')?.invalid" class="text-danger">
-        Standard Price is required and must be >= 0.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label>Premium Price Per Kg*</label>
-      <input type="number" class="form-control" formControlName="premiumPricePerKg" />
-      <div *ngIf="clientForm.get('premiumPricePerKg')?.touched && clientForm.get('premiumPricePerKg')?.invalid" class="text-danger">
-        Premium Price is required and must be >= 0.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label>Surface Price Per Kg*</label>
-      <input type="number" class="form-control" formControlName="surfacePricePerKg" />
-      <div *ngIf="clientForm.get('surfacePricePerKg')?.touched && clientForm.get('surfacePricePerKg')?.invalid" class="text-danger">
-        Surface Price is required and must be >= 0.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label>Address*</label>
-      <input type="text" class="form-control" formControlName="address" />
-      <div *ngIf="clientForm.get('address')?.touched && clientForm.get('address')?.invalid" class="text-danger">
-        Address is required.
-      </div>
-    </div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-    <button class="btn btn-success" type="submit" [disabled]="loading || clientForm.invalid">
-      {{ loading ? 'Submitting...' : 'Create Client' }}
-    </button>
-    <a routerLink="/client" class="btn btn-secondary ms-2">Cancel</a>
-  </form>
+    </form>
+  </div>
 </div>

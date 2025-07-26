@@ -15,7 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Builder
@@ -35,17 +34,39 @@ public class Client {
     private String email;
     private String contactPerson;
     private String contactNumber;
-    
-    @Column(nullable = false)
-    private Double standardPricePerKg;
-    
-    @Column(nullable = false)
-    private Double premiumPricePerKg;
-    
-    @Column(nullable = false)
-    private Double surfacePricePerKg;
-
-    // optional fields
     private String address;
+
+    
+    private Double airLocal250;
+    private Double airLocal500;
+    private Double airLocalAdd500;
+
+    private Double airNearby250;
+    private Double airNearby500;
+    private Double airNearbyAdd500;
+
+    private Double airPanIndia250;
+    private Double airPanIndia500;
+    private Double airPanIndiaAdd500;
+
+    private Double airSpecial250;
+    private Double airSpecial500;
+    private Double airSpecialAdd500;
+    // private Double airEcommarce;
+
+    private Double surfaceLocal500;
+    private Double surfaceNearby500;
+    private Double surfacePanIndia500;
+    private Double surfaceSpecial500;
+    // private Double surfaceEcommarce;
+
+    private Double premiumLocal500;
+    private Double premiumLocalAdd500;
+    private Double premiumNearby500;
+    private Double premiumNearbyAdd500;
+    private Double premiumPanIndia500;
+    private Double premiumPanIndiaAdd500;
+    private Double premiumSpecial500;
+    private Double premiumSpecialAdd500;
 
 }
