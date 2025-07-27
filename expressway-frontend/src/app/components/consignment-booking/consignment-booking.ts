@@ -22,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 })
 export class ConsignmentBooking {
   onSenderNameChange(selected: any) {
+    debugger;
     if (typeof selected === 'object' && selected !== null) {
       // It's a client object --> auto-fill contact/address
       this.consignmentForm.patchValue({
@@ -44,10 +45,11 @@ export class ConsignmentBooking {
   clients: Client[] = [];
 
   serviceTypes = [
-    { value: 'standard', label: 'Standard Delivery' },
-    { value: 'express', label: 'Express Delivery' },
-    { value: 'overnight', label: 'Overnight Delivery' },
-    { value: 'surface', label: 'Surface Delivery' },
+    { value: 'air', label: 'Standard Air' },
+    { value: 'express', label: 'Premium Air' },
+    { value: 'surface', label: 'Surface' },
+    // { value: 'eExpress', label: 'Ecom-Express' },
+    // { value: 'eSurface', label: 'Ecom-Surface' },
   ];
 
   statusOptions = [
@@ -85,7 +87,7 @@ export class ConsignmentBooking {
       receiverName: ['', [Validators.required, Validators.minLength(2)]],
       receiverAddress: ['', [Validators.required, Validators.minLength(10)]],
       weight: [
-        0,
+        ,
         [Validators.required, Validators.min(0.1), Validators.max(50)],
       ],
       dimensions: [
@@ -94,6 +96,7 @@ export class ConsignmentBooking {
       ],
       totalAmount: [0, [Validators.required, Validators.min(0)]],
       status: ['pending', Validators.required],
+      client: [null],
     });
   }
 
@@ -108,6 +111,16 @@ export class ConsignmentBooking {
     this.errorMessage = '';
     this.successMessage = '';
 
+    if (this.consignmentForm.get('senderName.id')?.value) {
+      this.consignmentForm
+        .get('client')
+        ?.setValue(this.consignmentForm.get('senderName')?.value);
+      this.consignmentForm
+        .get('client_id')
+        ?.setValue(this.consignmentForm.get('senderName.id')?.value);
+      this.consignmentForm.get('senderName')?.setValue(
+        this.consignmentForm.get('senderName.name')?.value)
+    }
     const consignmentData: ConsignmentRequest = this.consignmentForm.value;
 
     this.consignmentService.saveConsignment(consignmentData).subscribe({

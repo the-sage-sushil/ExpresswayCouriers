@@ -7,7 +7,7 @@
 
 /* Card Styling */
 .card {
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: none;
 }
@@ -30,14 +30,14 @@
 h5 {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #343a40;
+  color: #1b7ad8;
   margin-top: 1rem;
 }
 
 /* Label Styling */
 .form-label {
   font-weight: 500;
-  color: #495057;
+  color: #080808;
 }
 
 /* Inputs, Selects */

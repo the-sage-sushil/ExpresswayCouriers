@@ -128,15 +128,18 @@
               </div>
 
               <div class="col-md-6 mb-3">
-                <label for="senderName">Sender Name</label>
+                <label class="form-label" for="senderName">Sender Name</label>
                 <ng-select
                   id="senderName"
+                  class="form-label"
                   formControlName="senderName"
                   [items]="clients"
                   bindLabel="name"
                   [addTag]="true"
+                  bindValue="name"
                   placeholder="Select or type sender name"
-                  (change)="onSenderNameChange($event)">
+                  (change)="onSenderNameChange($event)"
+                  >
                   <ng-template ng-option-tmp let-item="item">{{ item.name }}</ng-template>
                 </ng-select>
 

@@ -1,5 +1,7 @@
 package com.sushil.expressway.models;
 
+import com.sushil.expressway.entitys.Client;
+
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import lombok.Getter;
@@ -34,7 +36,7 @@ public class ConsignmentRequest {
     private String dimensions;
 
 
-    private Long client; // Nullable. if null => walk-in
+    private Client client; // Nullable. if null => walk-in
 
     @Nonnull
     private Long totalAmount; 

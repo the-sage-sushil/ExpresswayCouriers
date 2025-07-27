@@ -13,7 +13,6 @@ export interface ConsignmentRequest {
   weight: number;
   dimensions: string;
   client?: Client;
-  client_id: number;
   totalAmount: number;
   status: string;
 }

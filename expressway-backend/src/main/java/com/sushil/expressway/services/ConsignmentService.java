@@ -21,14 +21,13 @@ public class ConsignmentService {
 
     private final Mapper mapper;
     private final ConsignmentRepository consignmentRepository;
-    private final ClientService clientService;
 
     public Long save(ConsignmentRequest request) {
 
         
         Consignment consignment = mapper.toConsignment(request);
         if(request.getClient() != null) {
-            consignment.setClient(clientService.getClientById(request.getClient()));
+            consignment.setClient((request.getClient()));
         }
         return consignmentRepository.save(consignment).getId();
     }

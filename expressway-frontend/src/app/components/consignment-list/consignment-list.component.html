@@ -9,6 +9,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>Booking Date</th>
           <th>Tracking Number</th>
           <th>Channel Partner</th>
           <th>Service Type</th>
@@ -17,12 +18,12 @@
           <th>Weight (kg)</th>
           <th>Total Amount</th>
           <th>Status</th>
-          <th>Booking Date</th>
           <!-- Add more columns if needed -->
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let consignment of bookResponse">
+          <td>{{ consignment.bookingDate | date:'mediumDate' }}</td>
           <td>{{ consignment.trackingNumber }}</td>
           <td>{{ consignment.chennalPatner }}</td>
           <td>{{ consignment.serviceType }}</td>
@@ -43,7 +44,6 @@
               'badge bg-secondary': consignment.status !== 'pending' && consignment.status !== 'delivered'
             }">{{ consignment.status | titlecase }}</span>
           </td>
-          <td>{{ consignment.bookingDate | date:'mediumDate' }}</td>
         </tr>
       </tbody>
     </table>

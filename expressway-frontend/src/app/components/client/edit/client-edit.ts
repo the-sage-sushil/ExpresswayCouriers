@@ -26,6 +26,8 @@ export class ClientEdit {
     private clientService: ClientService,
     private router: Router,
   ) {
+
+    
     this.clientForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
