@@ -8,6 +8,7 @@ export interface ConsignmentRequest {
   senderName: string;
   senderContact: string;
   senderAddress: string;
+  destPincode: number;
   receiverName: string;
   receiverAddress: string;
   weight: number;

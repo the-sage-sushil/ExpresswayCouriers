@@ -26,6 +26,8 @@ public class ConsignmentRequest {
 
     private String senderAddress; // Address of the sender
     @Nonnull
+    private Integer destPincode; // Destination Pincode
+    @Nonnull
     private String receiverName; // Name of the person receiving the consignment
     @Nonnull
     private String receiverAddress; // Address of the receiver

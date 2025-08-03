@@ -43,9 +43,10 @@ public class Consignment {
 
     @Column(unique = true)
     private String trackingNumber;
+    private String status;
     private String chennalPatner;
-    
     private String serviceType; // e.g., Standard, Express , Surface , Express surface
+    
     
     @ManyToOne
     @JsonIgnore
@@ -55,6 +56,7 @@ public class Consignment {
     private String senderName; // Name of the person sending the consignment
     private String senderContact; // Contact number of the sender
     
+    private Integer destPincode; // Name of the person receiving the consignment
     private String receiverName; // Name of the person receiving the consignment
     private String receiverAddress; // Address of the receiver
     private String receiverContact; // Contact number of the sender
@@ -65,10 +67,9 @@ public class Consignment {
     private Integer numberOfPackages;
 
     private String paymentMode;
-    private Long totalAmount; // Expected or actual delivery date
+    private Long totalAmount;
     
     private LocalDate expectedDeliveryDate;
     private LocalDate actualDeliveryDate;
-    private String status;
 
 }

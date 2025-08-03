@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
-import { Client } from '../../../services/models/client.model';
+import { Client, ClientRequest } from '../../../services/models/client.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,18 +16,20 @@ import { CommonModule } from '@angular/common';
   templateUrl: './client-edit.html',
   styleUrl: './client-edit.css',
 })
-export class ClientEdit {
+export class ClientEdit implements OnInit {
   clientForm: FormGroup;
   loading = false;
   error: string | null = null;
+  clientId : string;
 
   constructor(
     private fb: FormBuilder,
     private clientService: ClientService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
-
     
+    this.clientId = this.route.snapshot.paramMap.get('id')!;
     this.clientForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
@@ -68,6 +70,19 @@ export class ClientEdit {
     });
   }
 
+  ngOnInit(): void {
+    this.loading = true;
+    this.clientService.getClientById(+this.clientId).subscribe({
+      next: (client: Client) => {
+        this.clientForm.patchValue(client);
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load client data.';
+        this.loading = false;
+      }
+    });
+  }
   pricingCategories = [
     {
       label: 'By Air Local',
@@ -141,8 +156,8 @@ export class ClientEdit {
     if (this.clientForm.invalid) return;
 
     this.loading = true;
-    const formValue = this.clientForm.value as Omit<Client, 'id'>;
-    this.clientService.saveClient(formValue as Client).subscribe({
+    const formValue = this.clientForm.value as ClientRequest;
+    this.clientService.updateClient( +this.clientId , formValue).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/client']);

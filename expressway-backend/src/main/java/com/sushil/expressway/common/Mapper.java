@@ -23,6 +23,7 @@ public class Mapper {
                 .senderName(request.getSenderName())
                 .senderContact(request.getSenderContact())
                 .receiverName(request.getReceiverName())
+                .destPincode(request.getDestPincode())
                 .receiverAddress(request.getReceiverAddress())
                 .weight(request.getWeight())
                 .dimensions(request.getDimensions())

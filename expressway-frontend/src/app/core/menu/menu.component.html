@@ -26,65 +26,65 @@
             routerLink="/consignments"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >
+          >
             <i class="fas fa-home-alt"></i>&nbsp;Dashboard
           </a>
         </li>
-        
+
         <!-- Booking -->
         <li class="nav-item">
           <a
-          class="nav-link"
-          routerLink="/booking"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+            routerLink="/booking"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
           >
-          <i class="fas fa-book"></i>&nbsp;Booking
-        </a>
-      </li>
-      
-      <!-- Client Management -->
-      <li class="nav-item">
-        <a
-        class="nav-link"
-        routerLink="/client"
-        routerLinkActive="active"
-        >
-        <i class="fa-solid fa-briefcase"></i>&nbsp;Client Management
-      </a>
-    </li>
-    
-    <!-- My Returned Books (Fix empty routerLink) -->
-    <li class="nav-item">
-      <a
-      class="nav-link"
-      routerLink="/my-returned-books"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >
-      <i class="fa-solid fa-truck-fast"></i>&nbsp;My Returned Books
-    </a>
-  </li>
-  
-  <!-- Borrowed Books -->
-  <li class="nav-item">
-    <a
-    class="nav-link"
-    routerLink="/my-borrowed-books"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
+            <i class="fas fa-book"></i>&nbsp;Booking
+          </a>
+        </li>
+
+        <!-- Client Management -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/client" routerLinkActive="active">
+            <i class="fa-solid fa-briefcase"></i>&nbsp;Client Management
+          </a>
+        </li>
+
+        <!-- My Returned Books (Fix empty routerLink)
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/my-returned-books"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="fa-solid fa-truck-fast"></i>&nbsp;My Returned Books
+          </a>
+        </li>
+
+        Borrowed Books
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/my-borrowed-books"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
           >
             <i class="fas fa-list-check"></i>&nbsp;Borrowed Books
           </a>
-        </li>
+        </li> -->
       </ul>
 
       <!-- Search and User Info -->
-      <form class="d-flex gap-2 align-items-center" role="search" (submit)="false">
+      <form
+        class="d-flex gap-2 align-items-center"
+        role="search"
+        (submit)="(false)"
+      >
         <input
           class="form-control"
           type="search"
-          placeholder="Find a book"
+          placeholder="Search By Tracking Number"
           aria-label="Search"
         />
         <button class="btn btn-outline-success" type="submit">
@@ -94,11 +94,7 @@
         <span class="text-capitalize fw-bold">Sushil</span>
 
         <!-- Logout Button -->
-        <button
-          class="btn btn-link"
-          type="button"
-          (click)="logout()"
-        >
+        <button class="btn btn-link" type="button" (click)="logout()">
           <i class="fas fa-door-open"></i>
         </button>
       </form>

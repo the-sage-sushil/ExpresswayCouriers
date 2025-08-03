@@ -9,6 +9,7 @@ export interface Consignment {
   senderName: string;
   senderContact: string;
   senderAddress: string;
+  destPincode: number;
   receiverName: string;
   receiverAddress: string;
   receiverContact: string;

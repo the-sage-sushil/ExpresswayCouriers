@@ -77,7 +77,7 @@
 
               <div class="col-md-6 mb-3">
                 <label for="serviceType" class="form-label"
-                  >Service Type *</label
+                >Service Type *</label
                 >
                 <select
                   formControlName="serviceType"
@@ -89,7 +89,7 @@
                 >
                   <option value="">Select service type</option>
                   <option
-                    *ngFor="let type of serviceTypes"
+                  *ngFor="let type of serviceTypes"
                     [value]="type.value"
                   >
                     {{ type.label }}
@@ -99,28 +99,39 @@
                   class="invalid-feedback"
                   *ngIf="serviceType?.invalid && serviceType?.touched"
                 >
-                  <small>Service type is required</small>
-                </div>
+                <small>Service type is required</small>
               </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="status" class="form-label">Status *</label>
-                <select
-                  formControlName="status"
-                  class="form-select"
-                  id="status"
-                  [class.is-invalid]="status?.invalid && status?.touched"
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="destPincode" class="form-label"
+                >Destination Pincode *</label
+              >
+              <input
+                formControlName="destPincode"
+                type="number"
+                class="form-control"
+                id="destPincode"
+                placeholder="Enter Destination Pincode"
+                [class.is-invalid]="
+                  destPincode?.invalid && destPincode?.touched
+                "
+                (change)="onDestPincodeChange($event)"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="destPincode?.invalid && destPincode?.touched"
+              >
+                <small *ngIf="destPincode?.errors?.['required']"
+                  >Channel partner is required</small
                 >
-                  <option
-                    *ngFor="let stat of statusOptions"
-                    [value]="stat.value"
-                  >
-                    {{ stat.label }}
-                  </option>
-                </select>
+                <small *ngIf="destPincode?.errors?.['minlength']"
+                  >Minimum 2 characters required</small
+                >
               </div>
             </div>
 
+            </div>
             <!-- Sender Information -->
             <div class="row mb-4">
               <div class="col-12">
@@ -136,7 +147,6 @@
                   [items]="clients"
                   bindLabel="name"
                   [addTag]="true"
-                  bindValue="name"
                   placeholder="Select or type sender name"
                   (change)="onSenderNameChange($event)"
                   >

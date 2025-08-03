@@ -1,51 +1,69 @@
-<div class="container mt-4">
-  <h2>Consignment List</h2>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h3>Consignment List</h3>
+        </div>
+        <div class="card-body">
+          <div *ngIf="bookResponse?.length === 0" class="alert alert-info">
+            No consignments found.
+          </div>
 
-  <div *ngIf="!bookResponse || bookResponse?.length" class="alert alert-info">
-    No consignments found.
-  </div>
-
-  <div *ngIf="bookResponse">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Booking Date</th>
-          <th>Tracking Number</th>
-          <th>Channel Partner</th>
-          <th>Service Type</th>
-          <th>Sender</th>
-          <th>Receiver</th>
-          <th>Weight (kg)</th>
-          <th>Total Amount</th>
-          <th>Status</th>
-          <!-- Add more columns if needed -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let consignment of bookResponse">
-          <td>{{ consignment.bookingDate | date:'mediumDate' }}</td>
-          <td>{{ consignment.trackingNumber }}</td>
-          <td>{{ consignment.chennalPatner }}</td>
-          <td>{{ consignment.serviceType }}</td>
-          <td>
-            {{ consignment.senderName }}<br />
-            <small>{{ consignment.senderContact }}</small>
-          </td>
-          <td>
-            {{ consignment.receiverName }}<br />
-            <small>{{ consignment.receiverContact || 'N/A' }}</small>
-          </td>
-          <td>{{ consignment.weight }}</td>
-          <td>{{ consignment.totalAmount | currency:'INR' }}</td>
-          <td>
-            <span [ngClass]="{
-              'badge bg-warning text-dark': consignment.status === 'pending',
-              'badge bg-success': consignment.status === 'delivered',
-              'badge bg-secondary': consignment.status !== 'pending' && consignment.status !== 'delivered'
-            }">{{ consignment.status | titlecase }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <div *ngIf="bookResponse">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Booking Date</th>
+                    <th>Tracking Number</th>
+                    <th>Channel Partner</th>
+                    <th>Service Type</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Weight (kg)</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <!-- Add more columns if needed -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let consignment of bookResponse">
+                    <td>{{ consignment.bookingDate | date: "mediumDate" }}</td>
+                    <td>{{ consignment.trackingNumber }}</td>
+                    <td>{{ consignment.chennalPatner }}</td>
+                    <td>{{ consignment.serviceType }}</td>
+                    <td>
+                      {{ consignment.senderName }}<br />
+                      <small>{{ consignment.senderContact }}</small>
+                    </td>
+                    <td>
+                      {{ consignment.receiverName }}<br />
+                      <small>{{ consignment.receiverContact || "N/A" }}</small>
+                    </td>
+                    <td>{{ consignment.weight }}</td>
+                    <td>{{ consignment.totalAmount | currency: "INR" }}</td>
+                    <td>
+                      <span
+                        [ngClass]="{
+                          'badge bg-warning text-dark':
+                            consignment.status === 'pending',
+                          'badge bg-success':
+                            consignment.status === 'delivered',
+                          'badge bg-secondary':
+                            consignment.status !== 'pending' &&
+                            consignment.status !== 'delivered',
+                        }"
+                        >{{ consignment.status | titlecase }}</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

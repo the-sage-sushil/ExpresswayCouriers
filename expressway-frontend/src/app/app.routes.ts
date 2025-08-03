@@ -43,7 +43,7 @@ export const routes: Routes = [
     component: ClientEdit 
   },
 
-  { path: '', redirectTo: 'client', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'client' }
 ];
 

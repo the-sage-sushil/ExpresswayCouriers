@@ -8,10 +8,6 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Contact Number</th>
-        <th>Standard Price</th>
-        <th>Premium Price</th>
-        <th>Surface Price</th>
         <th>Address</th>
         <th>Actions</th>
       </tr>
@@ -21,9 +17,6 @@
         <td>{{ client.name }}</td>
         <td>{{ client.email }}</td>
         <td>{{ client.contactNumber }}</td>
-        <td>{{ client.standardPricePerKg }}</td>
-        <td>{{ client.premiumPricePerKg }}</td>
-        <td>{{ client.surfacePricePerKg }}</td>
         <td>{{ client.address }}</td>
         <td>
           <button class="btn btn-sm btn-info" (click)="editClient(client)">Edit</button>
