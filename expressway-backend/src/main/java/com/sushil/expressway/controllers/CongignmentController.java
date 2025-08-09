@@ -1,5 +1,7 @@
 package com.sushil.expressway.controllers;
 
+import java.util.List;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +52,8 @@ public class CongignmentController {
     public Mono<ServiceableResponse> getService(@PathVariable("destPincode") int pincode) {
         return utilService.getService(pincode);
     }
-    @PostMapping("getTat")
-    public Mono<TatResponse> getTat(@RequestBody TatRequest request) {
+    @PostMapping("/getTat")
+    public Mono<Object> getTat(@RequestBody TatRequest request) {
         return utilService.getTat(request);
     }
 }

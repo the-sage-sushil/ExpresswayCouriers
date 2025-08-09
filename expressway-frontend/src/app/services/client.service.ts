@@ -26,7 +26,7 @@ export class ClientService {
     return this.http.get<Client[]>(this.apiUrl, { withCredentials: true });
   }
 
-  deleteClient(clientId: number): Observable<void> {
+  deleteClient(clientId: number ): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${clientId}`, { withCredentials: true });
   }
 }

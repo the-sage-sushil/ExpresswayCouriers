@@ -1,6 +1,8 @@
 package com.sushil.expressway.services;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,22 +27,25 @@ public class UtilService {
     @Autowired
     private WebClient WebClient;
 
-
-    public Mono<ServiceableResponse> getService(Integer Dest){
-        String url = "https://ebookingbackend.dtdc.in/serviceableDelivery?src="+src+"&dst=" + Dest;
+    public Mono<ServiceableResponse> getService(Integer Dest) {
+        String url = "https://ebookingbackend.dtdc.in/serviceableDelivery?src=" + src + "&dst=" + Dest;
         return WebClient.get()
-        .uri(url)
-        .retrieve()
-        .bodyToMono(ServiceableResponse.class);
+                .uri(url)
+                .retrieve()
+                .bodyToMono(ServiceableResponse.class);
     }
 
-
-    public Mono<TatResponse> getTat(TatRequest request){
+    public Mono<Object> getTat(TatRequest request) {
         String url = "https://ebookingbackend.dtdc.in/getPriceAndTAT";
-        return WebClient.post()
-        .uri(url)
-        .bodyValue(request)
-        .retrieve()
-        .bodyToMono(TatResponse.class);
+        return WebClient
+                .post()
+                .uri(url)
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(TatResponse.class)
+                .map(tatResponse -> tatResponse.getExplain().stream()
+                        .filter(ex -> !(ex instanceof String)) // keep only objects
+                        .findFirst());
     }
+
 }

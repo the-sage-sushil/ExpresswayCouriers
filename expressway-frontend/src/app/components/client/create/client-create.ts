@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
-import { Client } from '../../../services/models/client.model';
+import { Client, ClientRequest } from '../../../services/models/client.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -140,7 +140,7 @@ export class ClientCreate {
 
     this.loading = true;
     const formValue = this.clientForm.value as Omit<Client, 'id'>;
-    this.clientService.saveClient(formValue as Client).subscribe({
+    this.clientService.saveClient(formValue as ClientRequest).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/client']);

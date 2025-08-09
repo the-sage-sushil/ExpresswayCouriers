@@ -77,7 +77,7 @@
 
               <div class="col-md-6 mb-3">
                 <label for="serviceType" class="form-label"
-                >Service Type *</label
+                  >Service Type *</label
                 >
                 <select
                   formControlName="serviceType"
@@ -86,10 +86,10 @@
                   [class.is-invalid]="
                     serviceType?.invalid && serviceType?.touched
                   "
+                  (input)="onServiceTypeSeclet($event)"
                 >
-                  <option value="">Select service type</option>
                   <option
-                  *ngFor="let type of serviceTypes"
+                    *ngFor="let type of serviceTypes"
                     [value]="type.value"
                   >
                     {{ type.label }}
@@ -99,38 +99,62 @@
                   class="invalid-feedback"
                   *ngIf="serviceType?.invalid && serviceType?.touched"
                 >
-                <small>Service type is required</small>
+                  <small>Service type is required</small>
+                </div>
               </div>
-            </div>
-            
-            <div class="col-md-6 mb-3">
-              <label for="destPincode" class="form-label"
-                >Destination Pincode *</label
-              >
-              <input
-                formControlName="destPincode"
-                type="number"
-                class="form-control"
-                id="destPincode"
-                placeholder="Enter Destination Pincode"
-                [class.is-invalid]="
-                  destPincode?.invalid && destPincode?.touched
-                "
-                (change)="onDestPincodeChange($event)"
-              />
-              <div
-                class="invalid-feedback"
-                *ngIf="destPincode?.invalid && destPincode?.touched"
-              >
-                <small *ngIf="destPincode?.errors?.['required']"
-                  >Channel partner is required</small
-                >
-                <small *ngIf="destPincode?.errors?.['minlength']"
-                  >Minimum 2 characters required</small
-                >
-              </div>
-            </div>
 
+              <div class="col-md-6 mb-3">
+                <label for="destPincode" class="form-label"
+                  >Destination Pincode *</label
+                >
+                <div class="position-relative">
+                  <input
+                    formControlName="destPincode"
+                    type="number"
+                    class="form-control pe-5"
+                    id="destPincode"
+                    placeholder="Enter Destination Pincode"
+                    [class.is-invalid]="
+                      destPincode?.invalid && destPincode?.touched
+                    "
+                    (input)="onDestPincodeInput($event)"
+                  />
+
+                  <!-- ✅ Check icon inside input box -->
+                  <i
+                    *ngIf="isServiceableflag && isServiceable?.data?.serviceable === false"
+                    class="fas fa-times-circle text-danger position-absolute"
+                    style="
+                      right: 10px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      pointer-events: none;
+                    "
+                  >Not serviceable</i>
+                  <i
+                    *ngIf="isServiceableflag && isServiceable?.data?.serviceable === true"
+                    class="fas fa-check-circle text-success position-absolute"
+                    style="
+                      right: 10px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      pointer-events: none;
+                    "
+                  >{{isServiceable?.data?.destinationBranchCity}}</i>
+                </div>
+
+                <div
+                  class="invalid-feedback"
+                  *ngIf="destPincode?.invalid && destPincode?.touched"
+                >
+                  <small *ngIf="destPincode?.errors?.['required']"
+                    >Pincode is required</small
+                  >
+                  <small *ngIf="destPincode?.errors?.['minlength']"
+                    >Minimum 2 digits required</small
+                  >
+                </div>
+              </div>
             </div>
             <!-- Sender Information -->
             <div class="row mb-4">
@@ -149,20 +173,24 @@
                   [addTag]="true"
                   placeholder="Select or type sender name"
                   (change)="onSenderNameChange($event)"
-                  >
-                  <ng-template ng-option-tmp let-item="item">{{ item.name }}</ng-template>
+                >
+                  <ng-template ng-option-tmp let-item="item">{{
+                    item.name
+                  }}</ng-template>
                 </ng-select>
 
-                  <div
-                    *ngIf="senderName?.invalid && senderName?.touched"
-                    class="invalid-feedback d-block"
-                  >
-                    Sender name is required.
-                  </div>
+                <div
+                  *ngIf="senderName?.invalid && senderName?.touched"
+                  class="invalid-feedback d-block"
+                >
+                  Sender name is required.
+                </div>
               </div>
 
               <div class="col-md-6 mb-3">
-                <label for="senderContact" class="form-label">Sender Contact *</label>
+                <label for="senderContact" class="form-label"
+                  >Sender Contact *</label
+                >
                 <input
                   formControlName="senderContact"
                   type="tel"
@@ -170,7 +198,9 @@
                   id="senderContact"
                   placeholder="Enter 10-digit phone number"
                   [class.is-invalid]="
-                    senderContact?.invalid && senderContact?.touched"/>
+                    senderContact?.invalid && senderContact?.touched
+                  "
+                />
                 <div
                   class="invalid-feedback"
                   *ngIf="senderContact?.invalid && senderContact?.touched"
@@ -184,7 +214,7 @@
                 </div>
               </div>
 
-              <div class="col-12 mb-3">
+              <!-- <div class="col-12 mb-3">
                 <label for="senderAddress" class="form-label"
                   >Sender Address *</label
                 >
@@ -209,7 +239,7 @@
                     >Minimum 10 characters required</small
                   >
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- Receiver Information -->
@@ -286,8 +316,8 @@
                   type="number"
                   class="form-control"
                   id="weight"
+                  (input)="onWeightInput($event)"
                   placeholder="Enter weight in kg"
-                  step="0.1"
                   [class.is-invalid]="weight?.invalid && weight?.touched"
                 />
                 <div

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ConsignmentRequest } from './models/consignment-request.model';
 import { Consignment } from './models/consignment.model';
 import { environment } from '../../environments/environment';
+import { Client } from './models/client.model';
 
 @Injectable({ providedIn: 'root' })
 export class ConsignmentService {
@@ -22,4 +23,13 @@ export class ConsignmentService {
   getConsignmentByClientId(clientId: number): Observable<Consignment[]> {
     return this.http.get<Consignment[]>(`${this.apiUrl}consignmentbyClientId/${clientId}`, { withCredentials: true });
   }
+
+  getCharges(client: Client, category: string, region: string): number[] {
+  const pattern = new RegExp(`^${category}${region}(\\d+|Add\\d+)$`);
+  return Object.entries(client)
+    .filter(([key, value]) => pattern.test(key) && value !== undefined && typeof value === 'number')
+    .map(([, value]) => value as number);
+  }
+
+
 }
