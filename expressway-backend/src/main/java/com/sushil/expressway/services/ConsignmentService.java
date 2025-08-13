@@ -1,7 +1,10 @@
+
 package com.sushil.expressway.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +35,43 @@ public class ConsignmentService {
         return consignmentRepository.save(consignment).getId();
     }
 
-    public Object getBookings() {
+    public List<Consignment> getBookings() {
         return consignmentRepository.findAll();
     }
 
-    public List<Consignment> getConsignmentByClientId(Long clientId) {
+   public List<Consignment> getConsignment(
+            Long clientId,
+            String status,
+            String serviceType,
+            String channelPartner,
+            LocalDate bookingDateFrom,
+            LocalDate bookingDateTo,
+            Integer minWeight,
+            Integer maxWeight,
+            String paymentMode) {
         
-        return consignmentRepository.findAllConsignmentByClientId(clientId);
+        // Build the specification dynamically
+        Specification<Consignment> spec = Specification.where(
+            ConsignmentSpecifications.hasClientId(clientId)
+        );
+        
+        if (status != null && !status.isEmpty()) {
+            spec = spec.and(ConsignmentSpecifications.hasStatus(status));
+        }
+        
+        if (serviceType != null && !serviceType.isEmpty()) {
+            spec = spec.and(ConsignmentSpecifications.hasServiceType(serviceType));
+        }
+        
+        if (bookingDateFrom != null && bookingDateTo != null) {
+            spec = spec.and(ConsignmentSpecifications.hasBookingDateBetween(bookingDateFrom, bookingDateTo));
+        }
+        
+        if (minWeight != null && maxWeight != null) {
+            spec = spec.and(ConsignmentSpecifications.hasWeightBetween(minWeight, maxWeight));
+        }
+        
+        return consignmentRepository.findAll(spec);
     }
 
 }
