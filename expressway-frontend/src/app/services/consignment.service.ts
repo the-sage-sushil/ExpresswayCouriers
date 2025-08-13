@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConsignmentRequest } from './models/consignment-request.model';
 import { Consignment } from './models/consignment.model';
@@ -13,23 +13,53 @@ export class ConsignmentService {
   constructor(private http: HttpClient) {}
 
   saveConsignment(request: ConsignmentRequest): Observable<Consignment> {
-    return this.http.post<Consignment>(`${this.apiUrl}booking`, request, { withCredentials: true });
+    return this.http.post<Consignment>(`${this.apiUrl}booking`, request, {
+      withCredentials: true,
+    });
   }
 
-  getBookings(): Observable<Consignment[]> {
-    return this.http.get<Consignment[]>(`${this.apiUrl}bookings`, { withCredentials: true });
+  getBookings(filters?: {
+    clientId?: number;
+    status?: string;
+    serviceType?: string;
+    channelPartner?: string;
+    bookingDateFrom?: string; // ISO date string 'YYYY-MM-DD'
+    bookingDateTo?: string;
+    minWeight?: number;
+    maxWeight?: number;
+    paymentMode?: string;
+  }): Observable<Consignment[]> {
+    let params = new HttpParams();
+
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        const value = (filters as any)[key];
+        if (value !== undefined && value !== null && value !== '') {
+          params = params.set(key, value);
+        }
+      });
+    }
+
+    return this.http.get<Consignment[]>(`${this.apiUrl}bookings`, {
+      params,
+      withCredentials: true,
+    });
   }
 
   getConsignmentByClientId(clientId: number): Observable<Consignment[]> {
-    return this.http.get<Consignment[]>(`${this.apiUrl}consignmentbyClientId/${clientId}`, { withCredentials: true });
+    return this.http.get<Consignment[]>(
+      `${this.apiUrl}consignmentbyClientId/${clientId}`,
+      { withCredentials: true },
+    );
   }
 
   getCharges(client: Client, category: string, region: string): number[] {
-  const pattern = new RegExp(`^${category}${region}(\\d+|Add\\d+)$`);
-  return Object.entries(client)
-    .filter(([key, value]) => pattern.test(key) && value !== undefined && typeof value === 'number')
-    .map(([, value]) => value as number);
+    const pattern = new RegExp(`^${category}${region}(\\d+|Add\\d+)$`);
+    return Object.entries(client)
+      .filter(
+        ([key, value]) =>
+          pattern.test(key) && value !== undefined && typeof value === 'number',
+      )
+      .map(([, value]) => value as number);
   }
-
-
 }

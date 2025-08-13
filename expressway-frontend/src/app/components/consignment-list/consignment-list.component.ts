@@ -2,34 +2,98 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Consignment } from '../../services/models/consignment.model';
 import { ConsignmentService } from '../../services/consignment.service';
-import { ConsignmentRequest } from '../../services/models/consignment-request.model';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ClientService } from '../../services/client.service';
+import { Client } from '../../services/models/client.model';
 
 @Component({
   selector: 'app-consignment-list',
   templateUrl: './consignment-list.component.html',
-  imports: [CommonModule],
   styleUrls: ['./consignment-list.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+  ],
 })
 export class ConsignmentList implements OnInit {
-  size: number | undefined;
-  page: number | undefined = 0;
-
-  bookResponse?: Consignment[];
+  consignmentResponse?: Consignment[];
+  clients?: Client[];
+  serviceTypes = [
+    { value: 'air', label: 'Standard Air' },
+    { value: 'premium', label: 'Premium Air' },
+    { value: 'surface', label: 'Surface' },
+    // { value: 'eExpress', label: 'Ecom-Express' },
+    // { value: 'eSurface', label: 'Ecom-Surface' },
+  ];
+  filters: any = {
+    clientId: '',
+    status: '',
+    serviceType: '',
+    channelPartner: '',
+    bookingDateFrom: '',
+    bookingDateTo: '',
+    minWeight: '',
+    maxWeight: '',
+    paymentMode: '',
+  };
 
   constructor(
     private consignmentService: ConsignmentService,
-    private router: Router
+    private clientService: ClientService,
+    private router: Router,
   ) {}
+
   ngOnInit(): void {
-    this.findAllBooks();
+    this.applyFilters(); // initial load
+    this.fetchClients();
   }
-  findAllBooks() {
-    this.consignmentService.getBookings().subscribe({
-      next: (books: Consignment[]): void => {
-        this.bookResponse = books;
-        console.log(this.bookResponse);
+
+  fetchClients(): void {
+    this.clientService.getAllClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+      },
+      error: (err) => {
+        // handle error
       },
     });
+  }
+  applyFilters() {
+    const filterParams: any = {};
+
+    Object.keys(this.filters).forEach((key) => {
+      let value = this.filters[key];
+
+      // Convert Date objects from datepicker to "YYYY-MM-DD"
+      if (value instanceof Date) {
+        value = value.toISOString().split('T')[0];
+      }
+
+      if (value !== '' && value !== null && value !== undefined) {
+        filterParams[key] = value;
+      }
+    });
+
+    this.consignmentService.getBookings(filterParams).subscribe({
+      next: (consignments: Consignment[]) => {
+        this.consignmentResponse = consignments;
+        // debugger;
+      },
+    });
+  }
+
+  resetFilters() {
+    Object.keys(this.filters).forEach((key) => (this.filters[key] = ''));
+    this.applyFilters();
   }
 }

@@ -166,12 +166,11 @@
                 <label class="form-label" for="senderName">Sender Name</label>
                 <ng-select
                   id="senderName"
-                  class="form-label"
+                  [class.is-invalid]="senderName?.invalid && senderName?.touched"
                   formControlName="senderName"
                   [items]="clients"
                   bindLabel="name"
                   [addTag]="true"
-                  placeholder="Select or type sender name"
                   (change)="onSenderNameChange($event)"
                 >
                   <ng-template ng-option-tmp let-item="item">{{
@@ -337,29 +336,76 @@
               </div>
 
               <div class="col-md-6 mb-3">
-                <label for="dimensions" class="form-label"
-                  >Dimensions (LxWxH cm) *</label
-                >
-                <input
-                  formControlName="dimensions"
-                  type="text"
-                  class="form-control"
-                  id="dimensions"
-                  placeholder="e.g., 30x20x15"
-                  [class.is-invalid]="
-                    dimensions?.invalid && dimensions?.touched
-                  "
-                />
-                <div
-                  class="invalid-feedback"
-                  *ngIf="dimensions?.invalid && dimensions?.touched"
-                >
-                  <small *ngIf="dimensions?.errors?.['required']"
-                    >Dimensions are required</small
-                  >
-                  <small *ngIf="dimensions?.errors?.['pattern']"
-                    >Format: LengthxWidthxHeight (e.g., 30x20x15)</small
-                  >
+                <div class="row">
+                  <label for="length" class="form-label">Dimensions (cm) *</label>
+                  <div class="col-md-4">
+                    <input
+                      formControlName="length"
+                      type="number"
+                      class="form-control"
+                      id="length"
+                      placeholder="Length"
+                      (input)="calculateVolume($event)"
+                      [class.is-invalid]="length?.invalid && length?.touched"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="length?.invalid && length?.touched"
+                    >
+                      <small *ngIf="length?.errors?.['required']"
+                        >Length is required</small
+                      >
+                      <small *ngIf="length?.errors?.['min']"
+                        >Must be greater than 0</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <input
+                      formControlName="width"
+                      type="number"
+                      class="form-control"
+                      id="width"
+                      placeholder="Width"
+                      (input)="calculateVolume($event)"
+                      [class.is-invalid]="width?.invalid && width?.touched"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="width?.invalid && width?.touched"
+                    >
+                      <small *ngIf="width?.errors?.['required']"
+                        >Width is required</small
+                      >
+                      <small *ngIf="width?.errors?.['min']"
+                        >Must be greater than 0</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <input
+                      formControlName="height"
+                      type="number"
+                      class="form-control"
+                      id="height"
+                      placeholder="Height"
+                      (input)="calculateVolume($event)"
+                      [class.is-invalid]="height?.invalid && height?.touched"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      *ngIf="height?.invalid && height?.touched"
+                    >
+                      <small *ngIf="height?.errors?.['required']"
+                        >Height is required</small
+                      >
+                      <small *ngIf="height?.errors?.['min']"
+                        >Must be greater than 0</small
+                      >
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -41,6 +41,7 @@ export class ConsignmentBooking {
   selectedClient = signal<Client>({} as Client);
   baseCharge: number = 0;
   addCharge: number = 0;
+  actualWeight = signal<number>(0);
 
   clients: Client[] = [];
 
@@ -130,7 +131,7 @@ export class ConsignmentBooking {
         this.successMessage = `Consignment created successfully! Tracking ID: ${response.trackingNumber}`;
         this.consignmentForm.reset();
         this.isLoading = false;
-        this.router.navigate(['/consignments']);
+        this.router.navigate(['/booking']);
       },
       error: (error) => {
         this.errorMessage =
@@ -214,10 +215,7 @@ export class ConsignmentBooking {
         this.locationType(),
       );
 
-      if (
-        this.selectedServiceType() === 'air' ||
-        this.selectedServiceType() === 'premium'
-      ) {
+      if (this.selectedServiceType() === 'air') {
         if (weight <= 0.25) {
           this.calculatedPrice.set(baseCharge[0]);
         } else if (weight <= 0.5) {
@@ -225,6 +223,21 @@ export class ConsignmentBooking {
         } else {
           const extraSlabs = Math.ceil((weight - 0.5) / 0.5);
           this.calculatedPrice.set(baseCharge[1] + baseCharge[2] * extraSlabs);
+        }
+        console.log(this.calculatedPrice());
+
+        this.consignmentForm
+          .get('totalAmount')
+          ?.setValue(this.calculatedPrice());
+      }
+      if (this.selectedServiceType() === 'premium') {
+        if (weight <= 0.25) {
+          this.calculatedPrice.set(baseCharge[0]);
+        } else if (weight <= 0.5) {
+          this.calculatedPrice.set(baseCharge[1]);
+        } else {
+          const extraSlabs = Math.ceil((weight - 0.5) / 0.5);
+          this.calculatedPrice.set(baseCharge[0] + baseCharge[1] * extraSlabs);
         }
         console.log(this.calculatedPrice());
 
@@ -267,6 +280,19 @@ export class ConsignmentBooking {
         // handle error
       },
     });
+  }
+
+  calculateVolume(event: Event) {
+    const length = Number(this.length?.value) || 0;
+    const width = Number(this.width?.value) || 0;
+    const height = Number(this.height?.value) || 0;
+
+    if (length > 0 && width > 0 && height > 0) {
+      const volume = length * width * height;
+      console.log('Calculated Volume:', volume);
+      // Here you can call your service method:
+      // this.myService.updateVolume(volume);
+    }
   }
 
   private markFormGroupTouched(): void {
@@ -320,5 +346,14 @@ export class ConsignmentBooking {
   }
   get status() {
     return this.consignmentForm.get('status');
+  }
+  get length() {
+    return this.consignmentForm.get('length');
+  }
+  get width() {
+    return this.consignmentForm.get('width');
+  }
+  get height() {
+    return this.consignmentForm.get('height');
   }
 }

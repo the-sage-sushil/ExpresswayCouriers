@@ -9,6 +9,7 @@ import { ConsignmentBooking } from './components/consignment-booking/consignment
 import { ClientList } from './components/client/client';
 import { ClientCreate } from './components/client/create/client-create';
 import { ClientEdit } from './components/client/edit/client-edit';
+import { Reports } from './components/reports/reports';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'booking',
     component: ConsignmentBooking
+  },
+  {
+    path: 'billings',
+    component: Reports
   },
   {
     path: 'client',
