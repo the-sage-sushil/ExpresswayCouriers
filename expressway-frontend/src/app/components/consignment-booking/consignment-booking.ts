@@ -20,6 +20,7 @@ import { ClientService } from '../../services/client.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { Dtdc } from '../../services/dtdc.service';
+import { locationTypes } from '../../../environments/environment';
 
 @Component({
   selector: 'app-consignment-booking',
@@ -53,14 +54,6 @@ export class ConsignmentBooking {
     // { value: 'eSurface', label: 'Ecom-Surface' },
   ];
 
-  locationTypes = [
-    { value: 'PanIndia', label: 'REST OF INDIA' },
-    { value: 'PanIndia', label: 'METROS' },
-    { value: 'Special', label: 'SPECIAL DESTINATONS' },
-    { value: 'Nearby', label: 'WITH IN ZONE' },
-    { value: 'Nearby', label: 'WITH IN STATE' },
-    { value: 'Local', label: 'WITH IN CITY' },
-  ];
   weightInputTimer: any;
 
   constructor(
@@ -78,10 +71,7 @@ export class ConsignmentBooking {
 
   private initializeForm(): void {
     this.consignmentForm = this.fb.group({
-      trackingNumber: [
-        null,
-        [Validators.required, Validators.pattern(/^[A-Z0-9]{6,20}$/)],
-      ],
+      trackingNumber: [null,[Validators.required, Validators.pattern(/^[A-Z0-9]{6,20}$/)]],
       channelPartner: ['dtdc', [Validators.required, Validators.minLength(2)]],
       serviceType: [null, Validators.required],
       senderName: [null, [Validators.required, Validators.minLength(2)]],
@@ -90,18 +80,9 @@ export class ConsignmentBooking {
       receiverName: [null, [Validators.required, Validators.minLength(2)]],
       receiverAddress: [null, [Validators.required]],
       destPincode: [null, Validators.required],
-      weight: [
-        ,
-        [Validators.required, Validators.min(0.1), Validators.max(50000)],
-      ],
-      dimensions: [
-        '1x1x1',
-        [Validators.required, Validators.pattern(/^\d+x\d+x\d+$/)],
-      ],
-      totalAmount: [
-        this.calculatedPrice(),
-        [Validators.required, Validators.min(0)],
-      ],
+      weight: [,[Validators.required, Validators.min(0.1), Validators.max(50000)]],
+      dimensions: ['1x1x1',[Validators.pattern(/^\d+x\d+x\d+$/)]],
+      totalAmount: [this.calculatedPrice(),[Validators.required, Validators.min(0)]],
       client: [null],
     });
   }
@@ -128,10 +109,9 @@ export class ConsignmentBooking {
 
     this.consignmentService.saveConsignment(consignmentData).subscribe({
       next: (response: Consignment) => {
-        this.successMessage = `Consignment created successfully! Tracking ID: ${response.trackingNumber}`;
+        this.successMessage = `Consignment created successfully! Tracking ID: ${response}`;
         this.consignmentForm.reset();
         this.isLoading = false;
-        this.router.navigate(['/booking']);
       },
       error: (error) => {
         this.errorMessage =
@@ -161,7 +141,7 @@ export class ConsignmentBooking {
       this.dtdc.getTatDetails(Number(pincode)).subscribe((resposne) => {
         this.tatResponse = resposne;
         this.locationType.set(
-          this.locationTypes.find(
+          locationTypes.find(
             (key) => key.label === resposne.destinationType.name,
           )?.value || '',
         );
@@ -195,7 +175,7 @@ export class ConsignmentBooking {
 
   onWeightInput(event: Event) {
     const value = Number((event.target as HTMLInputElement).value);
-
+    
     // Clear previous timer
     clearTimeout(this.weightInputTimer);
 
@@ -214,7 +194,7 @@ export class ConsignmentBooking {
         this.selectedServiceType(),
         this.locationType(),
       );
-
+      
       if (this.selectedServiceType() === 'air') {
         if (weight <= 0.25) {
           this.calculatedPrice.set(baseCharge[0]);
@@ -225,10 +205,10 @@ export class ConsignmentBooking {
           this.calculatedPrice.set(baseCharge[1] + baseCharge[2] * extraSlabs);
         }
         console.log(this.calculatedPrice());
-
+        
         this.consignmentForm
-          .get('totalAmount')
-          ?.setValue(this.calculatedPrice());
+        .get('totalAmount')
+        ?.setValue(this.calculatedPrice());
       }
       if (this.selectedServiceType() === 'premium') {
         if (weight <= 0.25) {
@@ -240,37 +220,37 @@ export class ConsignmentBooking {
           this.calculatedPrice.set(baseCharge[0] + baseCharge[1] * extraSlabs);
         }
         console.log(this.calculatedPrice());
-
+        
         this.consignmentForm
-          .get('totalAmount')
+        .get('totalAmount')
           ?.setValue(this.calculatedPrice());
-      }
-      if (this.selectedServiceType() === 'surface') {
-        let chargeWeight = Number(weight);
-
-        // Enforce minimum weight slab of 5 kg
-        if (chargeWeight < 5) {
-          chargeWeight = 5;
         }
-
-        // Calculate extra 500g slabs above 5kg (0 if exactly 5kg)
-        const extraSlabs = Math.ceil((chargeWeight - 5) / 0.5);
-
+        if (this.selectedServiceType() === 'surface') {
+          let chargeWeight = Number(weight);
+          
+          // Enforce minimum weight slab of 5 kg
+          if (chargeWeight < 5) {
+            chargeWeight = 5;
+          }
+          
+          // Calculate extra 500g slabs above 5kg (0 if exactly 5kg)
+          const extraSlabs = Math.ceil((chargeWeight - 5) / 0.5);
+          
         // Base price is charge for 5kg minimum: 5 * baseCharge[0]
         // Plus baseCharge[0] for each extra 500g slab
         const price = 5 * baseCharge[0] + extraSlabs * baseCharge[0];
-
+        
         this.calculatedPrice.set(price);
-
+        
         console.log(this.calculatedPrice());
-
+        
         this.consignmentForm
-          .get('totalAmount')
-          ?.setValue(this.calculatedPrice());
+        .get('totalAmount')
+        ?.setValue(this.calculatedPrice());
       }
     }
   }
-
+  
   fetchClients(): void {
     this.clientService.getAllClients().subscribe({
       next: (data) => {
