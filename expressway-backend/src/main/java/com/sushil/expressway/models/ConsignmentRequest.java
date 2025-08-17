@@ -1,5 +1,7 @@
 package com.sushil.expressway.models;
 
+import java.time.LocalDate;
+
 import com.sushil.expressway.entitys.Client;
 
 import jakarta.annotation.Nonnull;
@@ -15,6 +17,8 @@ public class ConsignmentRequest {
     @Column(unique = true)
     private String trackingNumber;
 
+    private LocalDate bookingDate;
+    
     @Nonnull
     private String channelPartner;
     @Nonnull

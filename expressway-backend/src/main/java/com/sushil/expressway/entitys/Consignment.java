@@ -36,7 +36,7 @@ public class Consignment {
     private Long id;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = true)
     private LocalDate bookingDate; // Date when the consignment was booked
     
     private Integer bookedBy; // user id of the person who booked the consignment

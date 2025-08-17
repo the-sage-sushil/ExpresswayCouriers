@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,13 @@ public class CongignmentController {
     @PostMapping("booking")
     public ResponseEntity<?> saveConsignment(@RequestBody ConsignmentRequest request) {
        return ResponseEntity.ok(consignmentService.save(request));
+    }
+
+    @PutMapping("booking/{clientId}")
+    public ResponseEntity<?> saveConsignment(
+        @PathVariable Long clientId,
+        @RequestBody ConsignmentRequest request) {
+       return ResponseEntity.ok(consignmentService.update(request, clientId));
     }
     
     @GetMapping("/consignmentbyClientId/{clientId}")

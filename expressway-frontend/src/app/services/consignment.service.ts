@@ -8,6 +8,11 @@ import { Client } from './models/client.model';
 
 @Injectable({ providedIn: 'root' })
 export class ConsignmentService {
+  updateConsignment(editedRowId: number, editableConsignment: any) {
+    return this.http.put<Consignment>(`${this.apiUrl}booking/${editedRowId}`, editableConsignment, {
+      withCredentials: true,
+    });
+  }
   private apiUrl = environment.apiBaseUrl + 'consignments/';
 
   constructor(private http: HttpClient) {}

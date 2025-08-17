@@ -6,14 +6,19 @@
           <h3>Consignment List</h3>
         </div>
         <div class="card-body">
-
           <!-- Filter Row -->
           <form (ngSubmit)="applyFilters()" class="mb-3">
             <div class="row g-2">
               <div class="col-md-2">
-                <select [(ngModel)]="filters.clientId" (ngModelChange)="applyFilters()" name="clientId" placeholder="Client ID" class="form-control">
-                  <option *ngFor="let type of clients" [value]="type.id" >
-                    {{type.name}}
+                <select
+                  [(ngModel)]="filters.clientId"
+                  (ngModelChange)="applyFilters()"
+                  name="clientId"
+                  placeholder="Client ID"
+                  class="form-control"
+                >
+                  <option *ngFor="let type of clients" [value]="type.id">
+                    {{ type.name }}
                   </option>
                 </select>
               </div>
@@ -21,20 +26,48 @@
                 <input type="text" [(ngModel)]="filters.status" name="status" placeholder="Status" class="form-control">
               </div> -->
               <div class="col-md-2">
-                <select [(ngModel)]="filters.serviceType" (ngModelChange)="applyFilters()" name="serviceType" placeholder="Service Type" class="form-control">
-                  <option *ngFor="let type of serviceTypes" [value]="type.value" >
-                    {{type.label}}
+                <select
+                  [(ngModel)]="filters.serviceType"
+                  (ngModelChange)="applyFilters()"
+                  name="serviceType"
+                  placeholder="Service Type"
+                  class="form-control"
+                >
+                  <option
+                    *ngFor="let type of serviceTypes"
+                    [value]="type.value"
+                  >
+                    {{ type.label }}
                   </option>
                 </select>
               </div>
               <div class="col-md-2">
-                <input type="text" [(ngModel)]="filters.channelPartner" (ngModelChange)="applyFilters()" name="channelPartner" placeholder="Channel Partner" class="form-control">
+                <input
+                  type="text"
+                  [(ngModel)]="filters.channelPartner"
+                  (ngModelChange)="applyFilters()"
+                  name="channelPartner"
+                  placeholder="Channel Partner"
+                  class="form-control"
+                />
               </div>
               <div class="col-md-2">
-                <input type="date" [(ngModel)]="filters.bookingDateFrom" (ngModelChange)="applyFilters()" name="bookingDateFrom" class="form-control">
-              </div> 
+                <input
+                  type="date"
+                  [(ngModel)]="filters.bookingDateFrom"
+                  (ngModelChange)="applyFilters()"
+                  name="bookingDateFrom"
+                  class="form-control"
+                />
+              </div>
               <div class="col-md-2">
-                <input type="date" [(ngModel)]="filters.bookingDateTo" (ngModelChange)="applyFilters()" name="bookingDateTo" class="form-control">
+                <input
+                  type="date"
+                  [(ngModel)]="filters.bookingDateTo"
+                  (ngModelChange)="applyFilters()"
+                  name="bookingDateTo"
+                  class="form-control"
+                />
               </div>
               <!-- <div class="col-md-2">
                 <input type="number" [(ngModel)]="filters.minWeight" name="minWeight" placeholder="Min Weight" class="form-control">
@@ -46,16 +79,27 @@
                 <input type="text" [(ngModel)]="filters.paymentMode" name="paymentMode" placeholder="Payment Mode" class="form-control">
               </div> -->
               <div class="col-md-1">
-                <button type="submit" class="btn btn-primary w-100">Search</button>
+                <button type="submit" class="btn btn-primary w-100">
+                  Search
+                </button>
               </div>
               <div class="col-md-1">
-                <button type="button" class="btn btn-secondary w-100" (click)="resetFilters()">Reset</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary w-100"
+                  (click)="resetFilters()"
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </form>
 
           <!-- No data -->
-          <div *ngIf="consignmentResponse?.length === 0" class="alert text-bg-danger">
+          <div
+            *ngIf="consignmentResponse?.length === 0"
+            class="alert text-bg-danger"
+          >
             No consignments found!.
           </div>
 
@@ -79,39 +123,150 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let consignment of consignmentResponse">
-                    <td>{{ consignment.bookingDate | date: "mediumDate" }}</td>
-                    <td>{{ consignment.trackingNumber }}</td>
-                    <td>{{ consignment.chennalPatner.toLocaleUpperCase() }}</td>
-                    <td>{{ consignment.serviceType.toLocaleUpperCase() }}</td>
-                    <td>
-                      {{ consignment.senderName.toLocaleUpperCase() }}<br />
-                      <!-- <small>{{ consignment.senderContact }}</small> -->
+                    <!-- Booking Date -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.bookingDate | date: "mediumDate" }}
                     </td>
-                    <td>
-                      {{ consignment.receiverName.toLocaleUpperCase() }}
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="date"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.bookingDate"
+                      />
                     </td>
-                    <td>
-                      {{ consignment.receiverAddress.toLocaleUpperCase() }}<br />
 
+                    <!-- Tracking Number -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.trackingNumber }}
                     </td>
-                    <td>{{ consignment.weight }}</td>
-                    <td>{{ consignment.totalAmount | currency: "INR" }}</td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.trackingNumber"
+                      />
+                    </td>
+
+                    <!-- Channel Partner -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.chennalPatner.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.chennalPatner"
+                      />
+                    </td>
+
+                    <!-- Service Type -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.serviceType.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <select
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.serviceType"
+                      >
+                        <option
+                          *ngFor="let type of serviceTypes"
+                          [value]="type.value"
+                        >
+                          {{ type.label }}
+                        </option>
+                      </select>
+                    </td>
+
+                    <!-- Sender Name -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.senderName.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.senderName"
+                      />
+                    </td>
+
+                    <!-- Receiver Name -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.receiverName.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.receiverName"
+                      />
+                    </td>
+
+                    <!-- Destination -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.receiverAddress.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.receiverAddress"
+                      />
+                    </td>
+
+                    <!-- Weight -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.weight }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.weight"
+                      />
+                    </td>
+
+                    <!-- Total Amount -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.totalAmount | currency: "INR" }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.totalAmount"
+                      />
+                    </td>
+
+                    <!-- Action Buttons -->
                     <td>
-                      <span
-                        [ngClass]="{
-                          'badge bg-warning text-dark': consignment.status === 'pending',
-                          'badge bg-success': consignment.status === 'delivered',
-                          'badge bg-secondary': consignment.status !== 'pending' && consignment.status !== 'delivered'
-                        }">
-                        {{ consignment.status | titlecase }}
-                      </span>
+                      <div *ngIf="editedRowId !== consignment.id">
+                        <button
+                          class="btn btn-sm btn-primary"
+                          (click)="startEdit(consignment)"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                      <div *ngIf="editedRowId === consignment.id">
+                        <button
+                          class="btn btn-sm btn-success me-2"
+                          (click)="saveEdit()"
+                        >
+                          Save
+                        </button>
+                        <button
+                          class="btn btn-sm btn-secondary"
+                          (click)="cancelEdit()"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
     </div>

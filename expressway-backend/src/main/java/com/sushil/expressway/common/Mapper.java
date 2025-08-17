@@ -1,5 +1,4 @@
 package com.sushil.expressway.common;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import jakarta.persistence.EntityListeners;
 @Service
 @EntityListeners(AuditingEntityListener.class)
 public class Mapper {
-
 
     public Consignment toConsignment(ConsignmentRequest request) {
         return Consignment.builder()
@@ -39,7 +37,7 @@ public class Mapper {
                 .contactNumber(request.getContactNumber())
                 .contactPerson(request.getContactPerson())
                 .address(request.getAddress())
-                
+
                 .airLocal250(request.getAirLocal250())
                 .airLocal500(request.getAirLocal500())
                 .airLocalAdd500(request.getAirLocalAdd500())
@@ -69,4 +67,5 @@ public class Mapper {
                 .build();
     }
 
+    
 }

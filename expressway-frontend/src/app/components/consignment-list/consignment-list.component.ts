@@ -26,6 +26,9 @@ import { Client } from '../../services/models/client.model';
   ],
 })
 export class ConsignmentList implements OnInit {
+  edit(arg0: number) {
+    console.log(`button ${arg0} clcick`);
+  }
   consignmentResponse?: Consignment[];
   clients?: Client[];
   serviceTypes = [
@@ -47,6 +50,9 @@ export class ConsignmentList implements OnInit {
     paymentMode: '',
   };
 
+  editedRowId: number | null = null;
+  editableConsignment: Consignment | any = {};
+
   constructor(
     private consignmentService: ConsignmentService,
     private clientService: ClientService,
@@ -57,7 +63,34 @@ export class ConsignmentList implements OnInit {
     this.applyFilters(); // initial load
     this.fetchClients();
   }
+  startEdit(consignment: Consignment) {
+  this.editedRowId = consignment.id;
+  // Deep copy to avoid two-way binding affecting original until save
+  this.editableConsignment = { ...consignment };
+}
 
+cancelEdit() {
+  this.editedRowId = null;
+  this.editableConsignment = {};
+}
+
+saveEdit() {
+  if (!this.editedRowId) return;
+
+  this.consignmentService.updateConsignment(this.editedRowId, this.editableConsignment).subscribe({
+    next: (updated) => {
+      // Update the row in local array
+      const index = this.consignmentResponse?.findIndex(c => c.id === this.editedRowId);
+      if (index !== undefined && index >= 0) {
+        this.consignmentResponse![index] = updated;
+      }
+      this.cancelEdit();
+    },
+    error: (err) => {
+      console.error("Update failed", err);
+    }
+  });
+}
   fetchClients(): void {
     this.clientService.getAllClients().subscribe({
       next: (data) => {

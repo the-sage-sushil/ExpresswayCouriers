@@ -9,30 +9,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.sushil.expressway.entitys.Consignment;
-import com.sushil.expressway.models.ConsignmentRequest;
 
 
-public interface ConsignmentRepository extends JpaRepository<Consignment,Integer>, JpaSpecificationExecutor<Consignment> {
+public interface ConsignmentRepository extends JpaRepository<Consignment,Long>, JpaSpecificationExecutor<Consignment> {
 
-    void save(ConsignmentRequest request);
+    // Remove: void save(ConsignmentRequest request); (JpaRepository already provides save(Consignment))
 
-    
+    boolean existsByTrackingNumberAndIdNot(String trackingNumber, Long id);
 
     @Query("""
         SELECT consignment 
         FROM Consignment consignment 
         WHERE consignment.client.id = :clientId
     """)
-    /**
-     * Finds all displayable books that are not archived, shareable, and not owned by the given user.
-     *
-     * @param pageable the pagination information
-     * @param clientId the ID of the user to exclude as the owner
-     * @return a page of displayable books
-     */
     List<Consignment> findAllConsignmentByClientId(@Param("clientId") Long clientId);
 
-    // Alternative approach using @Query with optional parameters (less flexible)
     @Query("""
         SELECT c FROM Consignment c 
         WHERE c.client.id = :clientId 
