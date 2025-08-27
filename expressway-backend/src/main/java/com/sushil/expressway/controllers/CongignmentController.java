@@ -20,6 +20,7 @@ import com.sushil.expressway.models.ConsignmentRequest;
 import com.sushil.expressway.models.ServiceableResponse;
 import com.sushil.expressway.models.TatRequest;
 import com.sushil.expressway.services.ConsignmentService;
+import com.sushil.expressway.services.ReportService;
 import com.sushil.expressway.services.UtilService;
 
 import jakarta.persistence.EntityListeners;
@@ -36,6 +37,7 @@ public class CongignmentController {
 
     private ConsignmentService consignmentService;
     private UtilService utilService;
+    private ReportService reportService;
 
     @PostMapping("booking")
     public ResponseEntity<?> saveConsignment(@RequestBody ConsignmentRequest request) {
@@ -96,5 +98,24 @@ public class CongignmentController {
     @PostMapping("/getTat")
     public Mono<Object> getTat(@RequestBody TatRequest request) {
         return utilService.getTat(request);
+    }
+    
+    @GetMapping("/invoice/{clientId}")
+    public ResponseEntity<byte[]> generateInvoice(
+        @PathVariable Long clientId,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        
+        try {
+            byte[] pdfBytes = reportService.generateInvoicePdf(clientId, fromDate, toDate);
+            
+            return ResponseEntity.ok()
+                .header("Content-Type", "application/pdf")
+                .header("Content-Disposition", "attachment; filename=invoice.pdf")
+                .body(pdfBytes);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

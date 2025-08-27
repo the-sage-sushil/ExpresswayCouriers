@@ -84,6 +84,7 @@ saveEdit() {
       if (index !== undefined && index >= 0) {
         this.consignmentResponse![index] = updated;
       }
+      this.resetFilters();
       this.cancelEdit();
     },
     error: (err) => {

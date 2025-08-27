@@ -46,4 +46,11 @@ public interface ConsignmentRepository extends JpaRepository<Consignment,Long>, 
         @Param("maxWeight") Integer maxWeight
     );
 
+    @Query("SELECT c FROM Consignment c WHERE c.client.id = :clientId AND c.bookingDate BETWEEN :fromDate AND :toDate ORDER BY c.bookingDate ASC")
+    List<Consignment> findByClientIdAndBookingDateBetweenOrderByBookingDateAsc(
+        @Param("clientId") Long clientId,
+        @Param("fromDate") LocalDate fromDate,
+        @Param("toDate") LocalDate toDate
+    );
+
 }

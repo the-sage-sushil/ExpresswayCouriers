@@ -99,4 +99,8 @@ public class ConsignmentService {
         return consignmentRepository.findAll(spec);
     }
 
+    public List<Consignment> getConsignmentsByClientAndDateRange(Long clientId, LocalDate fromDate, LocalDate toDate) {
+        return consignmentRepository.findByClientIdAndBookingDateBetweenOrderByBookingDateAsc(clientId, fromDate, toDate);
+    }
+
 }
