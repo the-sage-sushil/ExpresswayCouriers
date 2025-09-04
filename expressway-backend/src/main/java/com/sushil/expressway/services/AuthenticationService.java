@@ -3,12 +3,14 @@ package com.sushil.expressway.services;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sushil.expressway.entitys.Role;
 import com.sushil.expressway.entitys.Token;
 import com.sushil.expressway.entitys.User;
 import com.sushil.expressway.models.AuthenticationRequest;
@@ -37,6 +39,7 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail().toLowerCase())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .roles(List.of(Role.builder().name("USER").build()))
                 .build();
         User savedUser = userRepository.save(user);
         Integer token = generateActivationToken(savedUser);

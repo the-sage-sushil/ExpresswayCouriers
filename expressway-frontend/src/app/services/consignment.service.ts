@@ -10,7 +10,6 @@ import { Client } from './models/client.model';
 export class ConsignmentService {
   updateConsignment(editedRowId: number, editableConsignment: any) {
     return this.http.put<Consignment>(`${this.apiUrl}booking/${editedRowId}`, editableConsignment, {
-      withCredentials: true,
     });
   }
   private apiUrl = environment.apiBaseUrl + 'consignments/';
@@ -19,7 +18,6 @@ export class ConsignmentService {
 
   saveConsignment(request: ConsignmentRequest): Observable<Consignment> {
     return this.http.post<Consignment>(`${this.apiUrl}booking`, request, {
-      withCredentials: true,
     });
   }
 
@@ -47,14 +45,12 @@ export class ConsignmentService {
 
     return this.http.get<Consignment[]>(`${this.apiUrl}bookings`, {
       params,
-      withCredentials: true,
     });
   }
 
   getConsignmentByClientId(clientId: number): Observable<Consignment[]> {
     return this.http.get<Consignment[]>(
       `${this.apiUrl}consignmentbyClientId/${clientId}`,
-      { withCredentials: true },
     );
   }
 

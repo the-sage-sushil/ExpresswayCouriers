@@ -1,32 +1,27 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpHeaders,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { TokenService } from '../token.service';
 
-@Injectable()
-export class HttpTokenInterceptor implements HttpInterceptor {
-  tokenService: any;
-  constructor() {}
+export const httpTokenInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('Interceptor called for URL:', req.url); // Debug log
+  
+  const tokenService = inject(TokenService);
+  const token = tokenService.token;
+  
+  console.log('Token from service:', token); // Debug log
+  console.log('Current request headers:', req.headers.keys()); // Debug log
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    const token: string = this.tokenService.token;
-    if (token) {
-      const authRequest: HttpRequest<any> = request.clone({
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        })
-      });
-      return next.handle(authRequest);
-    }
-
-    return next.handle(request);
+  if (token) {
+    const authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log('Auth header added, final headers:', authReq.headers.keys()); // Debug log
+    console.log('Authorization header:', authReq.headers.get('Authorization')); // Debug log
+    return next(authReq);
   }
+
+  console.log('No token found, proceeding without authorization'); // Debug log
+  return next(req);
 }
