@@ -9,7 +9,7 @@ import { ConsignmentBooking } from './components/consignment-booking/consignment
 import { ClientList } from './components/client/client';
 import { ClientCreate } from './components/client/create/client-create';
 import { ClientEdit } from './components/client/edit/client-edit';
-import { Reports } from './components/reports/reports';
+import { InvoiceGeneratorComponent } from './components/invoice-generator/invoice-generator.component';
 
 export const routes: Routes = [
   {
@@ -34,7 +34,7 @@ export const routes: Routes = [
   },
   {
     path: 'billings',
-    component: Reports
+    component: InvoiceGeneratorComponent
   },
   {
     path: 'client',
@@ -46,6 +46,10 @@ export const routes: Routes = [
   },
   { path: 'client/edit/:id',
     component: ClientEdit 
+  },
+  {
+    path: 'invoice',
+    component: InvoiceGeneratorComponent
   },
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
