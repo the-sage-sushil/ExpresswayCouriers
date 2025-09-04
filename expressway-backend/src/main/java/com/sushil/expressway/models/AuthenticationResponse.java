@@ -13,6 +13,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class AuthenticationResponse {
 
-    private String token;
+    private String accessToken;
+    private String message;
 
 }

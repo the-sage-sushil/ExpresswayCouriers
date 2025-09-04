@@ -18,6 +18,13 @@ import com.sushil.expressway.models.AuthenticationResponse;
 import com.sushil.expressway.models.RegistrationRequest;
 import com.sushil.expressway.repositories.TokenRepository;
 import com.sushil.expressway.repositories.UserRepository;
+import com.sushil.expressway.repositories.RefreshTokenRepository;
+import com.sushil.expressway.entitys.RefreshToken;
+import com.sushil.expressway.models.RefreshTokenResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +37,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public Integer registerUser(RegistrationRequest request) {
@@ -89,8 +97,8 @@ public class AuthenticationService {
         return savedToken.getUser().getId().intValue();
     }
 
-    public AuthenticationResponse login(AuthenticationRequest request) {
-
+    @Transactional
+    public AuthenticationResponse login(AuthenticationRequest request, HttpServletResponse response) {
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -98,7 +106,102 @@ public class AuthenticationService {
         User user = ((User) auth.getPrincipal());
         claims.put("fullName", user.fullName());
 
-        var jwt = jwtService.generateToken(claims, user);
-        return AuthenticationResponse.builder().token(jwt).build();
+        var accessToken = jwtService.generateToken(claims, user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        
+        saveRefreshToken(user, refreshToken);
+        addRefreshTokenCookie(response, refreshToken);
+        
+        return AuthenticationResponse.builder()
+                .accessToken(accessToken)
+                .message("Login successful")
+                .build();
+    }
+
+    @Transactional
+    public RefreshTokenResponse refreshToken(HttpServletRequest request) {
+        String refreshToken = extractRefreshTokenFromCookie(request);
+        if (refreshToken == null) {
+            throw new RuntimeException("Refresh token not found");
+        }
+
+        String username = jwtService.extractUserName(refreshToken);
+        if (username != null) {
+            User user = userRepository.findByEmail(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            RefreshToken storedToken = refreshTokenRepository.findByToken(refreshToken)
+                    .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+            
+            if (storedToken.isRevoked() || storedToken.isExpired()) {
+                throw new RuntimeException("Refresh token is invalid or expired");
+            }
+            
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                var claims = new HashMap<String, Object>();
+                claims.put("fullName", user.fullName());
+                var accessToken = jwtService.generateToken(claims, user);
+                
+                return RefreshTokenResponse.builder()
+                        .accessToken(accessToken)
+                        .message("Token refreshed successfully")
+                        .build();
+            }
+        }
+        throw new RuntimeException("Invalid refresh token");
+    }
+
+    @Transactional
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = extractRefreshTokenFromCookie(request);
+        if (refreshToken != null) {
+            refreshTokenRepository.findByToken(refreshToken)
+                    .ifPresent(token -> {
+                        token.setRevoked(true);
+                        refreshTokenRepository.save(token);
+                    });
+        }
+        clearRefreshTokenCookie(response);
+    }
+
+    private void saveRefreshToken(User user, String refreshToken) {
+        refreshTokenRepository.revokeAllUserTokens(user);
+        
+        RefreshToken token = RefreshToken.builder()
+                .token(refreshToken)
+                .user(user)
+                .expiresAt(LocalDateTime.now().plusDays(7))
+                .revoked(false)
+                .build();
+        refreshTokenRepository.save(token);
+    }
+
+    private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // Set to true in production with HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+        response.addCookie(cookie);
+    }
+
+    private String extractRefreshTokenFromCookie(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("refreshToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    private void clearRefreshTokenCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }

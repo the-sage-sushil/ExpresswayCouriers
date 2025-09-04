@@ -29,7 +29,8 @@ export class Login {
     this.errorMsg = [];
     this.authService.login(this.authRequest).subscribe({
       next: (res: AuthenticationResponse): void => {
-        this.tokenService.token = res.token as string;
+        const token = res.accessToken || res.token;
+        this.tokenService.token = token as string;
         this.router.navigate(['consignments']);
       },
       error: (err): void => {
@@ -40,6 +41,18 @@ export class Login {
           this.errorMsg.push(err.error.businessExceptionDescription);
         }
       },
+    });
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['login']);
+      },
+      error: (err) => {
+        console.error('Logout error:', err);
+        this.router.navigate(['login']);
+      }
     });
   }
 }

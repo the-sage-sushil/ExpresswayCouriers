@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sushil.expressway.models.AuthenticationRequest;
 import com.sushil.expressway.models.AuthenticationResponse;
 import com.sushil.expressway.models.RegistrationRequest;
+import com.sushil.expressway.models.RefreshTokenResponse;
 import com.sushil.expressway.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +47,21 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {  
-        return ResponseEntity.ok(authenticationService.login(request));
+    public ResponseEntity<AuthenticationResponse> login(
+            @RequestBody AuthenticationRequest request,
+            HttpServletResponse response) {  
+        return ResponseEntity.ok(authenticationService.login(request, response));
+    }
+
+    @PostMapping("refresh-token")
+    public ResponseEntity<RefreshTokenResponse> refreshToken(HttpServletRequest request) {
+        return ResponseEntity.ok(authenticationService.refreshToken(request));
+    }
+
+    @PostMapping("logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        authenticationService.logout(request, response);
+        return ResponseEntity.ok().build();
     }
     
 }

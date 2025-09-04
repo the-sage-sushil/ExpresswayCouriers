@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { App } from './app';
 import { AppRoutingModule } from './app.routes';
 import { CodeInputModule } from 'angular-code-input';
@@ -21,6 +22,7 @@ import { InvoiceGeneratorComponent } from './components/invoice-generator/invoic
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     CodeInputModule,
     FormsModule,
     NgSelectModule,
@@ -36,6 +38,7 @@ import { InvoiceGeneratorComponent } from './components/invoice-generator/invoic
     InvoiceGeneratorComponent,
     App,
   ],
-  providers: [],
+  providers: [
+  ],
 })
 export class AppModule { }

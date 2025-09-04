@@ -1,27 +1,48 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TokenService } from '../token.service';
+import { AuthenticationService } from '../authentication.service';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 export const httpTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log('Interceptor called for URL:', req.url); // Debug log
-  
   const tokenService = inject(TokenService);
-  const token = tokenService.token;
+  const authService = inject(AuthenticationService);
+  const router = inject(Router);
   
-  console.log('Token from service:', token); // Debug log
-  console.log('Current request headers:', req.headers.keys()); // Debug log
-
-  if (token) {
-    const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log('Auth header added, final headers:', authReq.headers.keys()); // Debug log
-    console.log('Authorization header:', authReq.headers.get('Authorization')); // Debug log
-    return next(authReq);
+  // Add token to non-auth requests
+  if (!req.url.includes('/auth/')) {
+    const token = tokenService.token;
+    if (token) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
   }
 
-  console.log('No token found, proceeding without authorization'); // Debug log
-  return next(req);
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 && !req.url.includes('/auth/')) {
+        return authService.refreshToken().pipe(
+          switchMap((response) => {
+            const newReq = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${response.accessToken}`
+              }
+            });
+            return next(newReq);
+          }),
+          catchError((refreshError) => {
+            authService.logout().subscribe({
+              complete: () => router.navigate(['/login'])
+            });
+            return throwError(() => refreshError);
+          })
+        );
+      }
+      return throwError(() => error);
+    })
+  );
 }

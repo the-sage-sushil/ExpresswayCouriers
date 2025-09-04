@@ -3,33 +3,53 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class  TokenService {
+export class TokenService {
 
-  private readonly TOKEN_KEY = 'token';
+  private readonly TOKEN_KEY = 'accessToken';
 
   set token(token: string) {
-    console.log('Setting token:', token); // Debug log
     if (token) {
-      localStorage.setItem(this.TOKEN_KEY, token);
-      console.log('Token stored in localStorage:', localStorage.getItem(this.TOKEN_KEY)); // Debug log
+      sessionStorage.setItem(this.TOKEN_KEY, token);
     } else {
       this.clearToken();
-      console.log('Token cleared from localStorage'); // Debug log
     }
   }
 
   get token(): string | null {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    console.log('Getting token from localStorage:', token); // Debug log
-    return token;
+    return sessionStorage.getItem(this.TOKEN_KEY);
   }
 
   clearToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    sessionStorage.removeItem(this.TOKEN_KEY);
   }
 
   hasToken(): boolean {
-    return !!this.token;
+    return !!this.token && !this.isTokenExpired();
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.token;
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      return true;
+    }
+  }
+
+  getTokenExpirationTime(): number | null {
+    const token = this.token;
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000;
+    } catch (error) {
+      return null;
+    }
   }
 }
 
