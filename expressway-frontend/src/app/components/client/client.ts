@@ -26,6 +26,7 @@ export class ClientList  implements OnInit {
     this.clientService.getAllClients().subscribe({
       next: (data) => {
         this.clients = data;
+        this.loading = false;
       },
       error: (err) => {
         this.loading = false;
