@@ -17,7 +17,8 @@ export class App {
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showMenu.set(event.url !== '/login');
+        const hideMenuRoutes = ['/login', '/register', '/activation'];
+        this.showMenu.set(!hideMenuRoutes.includes(event.url));
       }
     });
   }

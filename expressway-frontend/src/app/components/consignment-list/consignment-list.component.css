@@ -2,7 +2,8 @@
 /* General Container */
 .container-fluid {
   padding: 2rem;
-  background-color: #f7f9fc;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
 
 /* Card Styling */

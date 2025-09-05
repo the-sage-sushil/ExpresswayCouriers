@@ -1,59 +1,162 @@
-<!DOCTYPE html>
-<div class="container-fluid card login-container">
-  <h3 class="text-center mt-2">Registration page</h3>
-  <hr />
-  <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length > 0">
-    <p *ngFor="let msg of errorMsg">{{ msg }}</p>
-  </div>
-  <div class="mb-3">
-    <label for="register" class="form-label"> Email Address</label>
-    <input
-      [(ngModel)]="registerRequest.email"
-      type="email"
-      class="form-control"
-      id="register"
-      placeholderd="name@gmail.com"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="register" class="form-label">First Name</label>
-    <input
-      [(ngModel)]="registerRequest.firstName"
-      type="text"
-      class="form-control"
-      id="firstName"
-      placeholder="First name"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="register" class="form-label">Last Name</label>
-    <input
-      [(ngModel)]="registerRequest.lastName"
-      type="text"
-      class="form-control"
-      id="lastName"
-      placeholder="last name"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input
-      [(ngModel)]="registerRequest.password"
-      type="password"
-      class="form-control"
-      id="password"
-      placeholder="password"
-    />
-  </div>
-  <div class="d-flex justify-content-between mb-3">
-    <button (click)="register()" type="button" class="btn btn-lg btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Register</em>
-    </button> 
-    <div>
-        Already have aan account ?&nbsp;
-      <button type="button" class="btn btn-link">
-        <em (click)="login()" class="fas fa-sign-in-alt">&nbsp;Log in</em>
-      </button>
+<div class="register-wrapper">
+  <div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="col-md-8 col-lg-5">
+        <div class="card shadow-lg border-0">
+          <div class="card-header bg-primary text-white text-center py-4">
+            <i class="fas fa-user-plus fa-2x mb-2"></i>
+            <h3 class="mb-0">Create Account</h3>
+            <p class="mb-0 mt-2 opacity-75">Join ExpressWay today</p>
+          </div>
+          <div class="card-body p-4">
+            <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length > 0">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              <div *ngFor="let msg of errorMsg">{{ msg }}</div>
+            </div>
+            
+            <form>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="form-label fw-semibold">
+                    <i class="fas fa-user me-2"></i>First Name
+                  </label>
+                  <input
+                    [(ngModel)]="registerRequest.firstName"
+                    type="text"
+                    class="form-control form-control-lg"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Enter first name"
+                    required
+                  />
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="lastName" class="form-label fw-semibold">
+                    <i class="fas fa-user me-2"></i>Last Name
+                  </label>
+                  <input
+                    [(ngModel)]="registerRequest.lastName"
+                    type="text"
+                    class="form-control form-control-lg"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Enter last name"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">
+                  <i class="fas fa-envelope me-2"></i>Email Address
+                </label>
+                <input
+                  [(ngModel)]="registerRequest.email"
+                  type="email"
+                  class="form-control form-control-lg"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              
+              <div class="mb-4">
+                <label for="password" class="form-label fw-semibold">
+                  <i class="fas fa-lock me-2"></i>Password
+                </label>
+                <input
+                  [(ngModel)]="registerRequest.password"
+                  (input)="onPasswordChange()"
+                  (focus)="onPasswordFocus()"
+                  type="password"
+                  class="form-control form-control-lg"
+                  id="password"
+                  name="password"
+                  placeholder="Create a password"
+                  required
+                />
+                
+                <!-- Password Criteria -->
+                <div class="password-criteria mt-2" *ngIf="showPasswordCriteria">
+                  <div class="criteria-header mb-2">
+                    <small class="text-success fw-bold" *ngIf="isPasswordValid()">
+                      <i class="fas fa-check-circle me-1"></i>Password meets all requirements!
+                    </small>
+                    <small class="text-warning fw-bold" *ngIf="!isPasswordValid()">
+                      <i class="fas fa-exclamation-triangle me-1"></i>Password missing:
+                    </small>
+                  </div>
+                  
+                  <div class="criteria-list">
+                    <!-- Show missing criteria prominently -->
+                    <small class="d-block missing-criteria" *ngIf="!passwordCriteria.minLength">
+                      <i class="fas fa-times text-danger me-2"></i>
+                      <span class="text-danger fw-semibold">At least 8 characters</span>
+                    </small>
+                    <small class="d-block missing-criteria" *ngIf="!passwordCriteria.hasLowercase">
+                      <i class="fas fa-times text-danger me-2"></i>
+                      <span class="text-danger fw-semibold">One lowercase letter (a-z)</span>
+                    </small>
+                    <small class="d-block missing-criteria" *ngIf="!passwordCriteria.hasUppercase">
+                      <i class="fas fa-times text-danger me-2"></i>
+                      <span class="text-danger fw-semibold">One uppercase letter (A-Z)</span>
+                    </small>
+                    <small class="d-block missing-criteria" *ngIf="!passwordCriteria.hasNumber">
+                      <i class="fas fa-times text-danger me-2"></i>
+                      <span class="text-danger fw-semibold">One number (0-9)</span>
+                    </small>
+                    <small class="d-block missing-criteria" *ngIf="!passwordCriteria.hasSpecialChar">
+                      <i class="fas fa-times text-danger me-2"></i>
+                      <span class="text-danger fw-semibold">One special character (&#64;$!%*?&)</span>
+                    </small>
+                    
+                    <!-- Show met criteria in smaller, muted text -->
+                    <div class="met-criteria mt-2" *ngIf="!isPasswordValid()">
+                      <small class="d-block text-muted" *ngIf="passwordCriteria.minLength">
+                        <i class="fas fa-check text-success me-2"></i>8+ characters ✓
+                      </small>
+                      <small class="d-block text-muted" *ngIf="passwordCriteria.hasLowercase">
+                        <i class="fas fa-check text-success me-2"></i>Lowercase letter ✓
+                      </small>
+                      <small class="d-block text-muted" *ngIf="passwordCriteria.hasUppercase">
+                        <i class="fas fa-check text-success me-2"></i>Uppercase letter ✓
+                      </small>
+                      <small class="d-block text-muted" *ngIf="passwordCriteria.hasNumber">
+                        <i class="fas fa-check text-success me-2"></i>Number ✓
+                      </small>
+                      <small class="d-block text-muted" *ngIf="passwordCriteria.hasSpecialChar">
+                        <i class="fas fa-check text-success me-2"></i>Special character ✓
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <button 
+                (click)="register()" 
+                type="button" 
+                class="btn btn-primary btn-lg w-100 mb-3"
+                [disabled]="!registerRequest.firstName || !registerRequest.lastName || !registerRequest.email || !isPasswordValid()"
+              >
+                <i class="fas fa-user-plus me-2"></i>Create Account
+              </button>
+            </form>
+            
+            <div class="text-center">
+              <p class="mb-0">Already have an account?</p>
+              <button 
+                type="button" 
+                class="btn btn-link p-0" 
+                (click)="login()"
+              >
+                <i class="fas fa-sign-in-alt me-1"></i>Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

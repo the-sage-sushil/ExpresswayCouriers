@@ -2,7 +2,8 @@
 /* General Container */
 .container-fluid {
   padding: 2rem;
-  background-color: #f7f9fc;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
 
 /* Card Styling */
@@ -55,13 +56,48 @@ h5 {
 }
 
 /* ng-select overrides */
+ng-select ::ng-deep .ng-select {
+  display: block;
+  width: 100%;
+}
+
 ng-select ::ng-deep .ng-select-container {
   border-radius: 0.4rem;
   min-height: 38px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 ng-select ::ng-deep .ng-select-container:focus-within {
+  border-color: #007bff;
   box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+}
+
+ng-select ::ng-deep .ng-select.ng-select-single .ng-select-container {
+  height: 38px;
+}
+
+ng-select ::ng-deep .ng-placeholder {
+  color: #6c757d;
+  display: block;
+  line-height: 1.5;
+}
+
+ng-select ::ng-deep .ng-input > input {
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+ng-select.is-invalid ::ng-deep .ng-select-container {
+  border-color: #dc3545;
+}
+
+ng-select.is-invalid ::ng-deep .ng-select-container:focus-within {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.15rem rgba(220, 53, 69, 0.25);
 }
 
 /* Button Styling */

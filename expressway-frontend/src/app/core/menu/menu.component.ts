@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -8,7 +8,13 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent {
+  constructor(private router: Router) {}
+
   logout() {
-    throw new Error('Method not implemented.');
+    sessionStorage.clear();
+    localStorage.clear();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 }

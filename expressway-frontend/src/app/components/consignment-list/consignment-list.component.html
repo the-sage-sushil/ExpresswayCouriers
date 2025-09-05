@@ -14,9 +14,9 @@
                   [(ngModel)]="filters.clientId"
                   (ngModelChange)="applyFilters()"
                   name="clientId"
-                  placeholder="Client ID"
                   class="form-control"
                 >
+                  <option value="" disabled selected>Select Client</option>
                   <option *ngFor="let type of clients" [value]="type.id">
                     {{ type.name }}
                   </option>
@@ -30,9 +30,9 @@
                   [(ngModel)]="filters.serviceType"
                   (ngModelChange)="applyFilters()"
                   name="serviceType"
-                  placeholder="Service Type"
                   class="form-control"
                 >
+                  <option value="" disabled selected>Select Service Type</option>
                   <option
                     *ngFor="let type of serviceTypes"
                     [value]="type.value"

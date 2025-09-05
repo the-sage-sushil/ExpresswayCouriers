@@ -1,7 +1,9 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
   <div class="container-fluid">
     <!-- Logo -->
-    <a class="navbar-brand" routerLink="/">ExpressWay</a>
+    <a class="navbar-brand fw-bold" routerLink="/consignments">
+      <i class="fas fa-shipping-fast me-2"></i>ExpressWay
+    </a>
 
     <!-- Mobile Toggle Button -->
     <button
@@ -22,73 +24,69 @@
         <!-- Dashboard -->
         <li class="nav-item">
           <a
-            class="nav-link"
+            class="nav-link px-3"
             routerLink="/consignments"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <i class="fas fa-home-alt"></i>&nbsp;Dashboard
+            <i class="fas fa-tachometer-alt me-1"></i>
+            <span class="d-lg-inline d-md-none">Dashboard</span>
           </a>
         </li>
 
         <!-- Booking -->
         <li class="nav-item">
           <a
-            class="nav-link"
+            class="nav-link px-3"
             routerLink="/booking"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <i class="fa-solid fa-dolly"></i>&nbsp;Booking
+            <i class="fas fa-plus-circle me-1"></i>
+            <span class="d-lg-inline d-md-none">Booking</span>
           </a>
         </li>
 
         <!-- Client Management -->
         <li class="nav-item">
-          <a class="nav-link" routerLink="/client" routerLinkActive="active">
-            <i class="fa-solid fa-briefcase"></i>&nbsp;Client Management
+          <a class="nav-link px-3" routerLink="/client" routerLinkActive="active">
+            <i class="fas fa-users me-1"></i>
+            <span class="d-lg-inline d-md-none">Clients</span>
           </a>
         </li>
 
+        <!-- Billings -->
         <li class="nav-item">
           <a
-          class="nav-link"
-          routerLink="/billings"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          >
-          <i class="fa-solid fa-boxes-packing"></i>&nbsp; Billings & Reports
-        </a>
-      </li>
-      
-      <!-- My Returned Books (Fix empty routerLink)
-        Borrowed Books
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="/my-borrowed-books"
+            class="nav-link px-3"
+            routerLink="/billings"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            <i class="fas fa-list-check"></i>&nbsp;Borrowed Books
+            <i class="fas fa-file-invoice me-1"></i>
+            <span class="d-lg-inline d-md-none">Billings</span>
           </a>
-        </li> -->
+        </li>
       </ul>
 
-      <!-- Search and User Info -->
-      <form
-        class="d-flex gap-2 align-items-center"
-        role="search"
-        (submit)="(false)"
-      >
-        <span>Welcome</span>
-        <span class="text-capitalize fw-bold">Sushil</span>
-
+      <!-- User Info and Logout -->
+      <div class="d-flex align-items-center">
+        <div class="navbar-text text-white me-3 d-none d-md-block">
+          <i class="fas fa-user-circle me-1"></i>
+          Welcome, <span class="fw-bold">Sushil</span>
+        </div>
+        
         <!-- Logout Button -->
-        <button class="btn btn-link" type="button" (click)="logout()">
-          <i class="fas fa-door-open"></i>
+        <button 
+          class="btn btn-outline-light btn-sm" 
+          type="button" 
+          (click)="logout()"
+          title="Logout"
+        >
+          <i class="fas fa-sign-out-alt me-1"></i>
+          <span class="d-none d-sm-inline">Logout</span>
         </button>
-      </form>
+      </div>
     </div>
   </div>
 </nav>
