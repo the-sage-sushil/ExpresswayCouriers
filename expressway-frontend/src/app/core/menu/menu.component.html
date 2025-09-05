@@ -1,92 +1,104 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<!-- Desktop Navbar -->
+<nav class="navbar navbar-dark bg-primary shadow-sm d-none d-lg-flex">
   <div class="container-fluid">
-    <!-- Logo -->
     <a class="navbar-brand fw-bold" routerLink="/consignments">
       <i class="fas fa-shipping-fast me-2"></i>ExpressWay
     </a>
 
-    <!-- Mobile Toggle Button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <ul class="navbar-nav d-flex flex-row me-auto">
+      <li class="nav-item me-3">
+        <a class="nav-link" routerLink="/consignments" routerLinkActive="active">
+          <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+        </a>
+      </li>
+      <li class="nav-item me-3">
+        <a class="nav-link" routerLink="/booking" routerLinkActive="active">
+          <i class="fas fa-plus-circle me-1"></i>Booking
+        </a>
+      </li>
+      <li class="nav-item me-3">
+        <a class="nav-link" routerLink="/client" routerLinkActive="active">
+          <i class="fas fa-users me-1"></i>Clients
+        </a>
+      </li>
+      <li class="nav-item me-3">
+        <a class="nav-link" routerLink="/billings" routerLinkActive="active">
+          <i class="fas fa-file-invoice me-1"></i>Billings
+        </a>
+      </li>
+    </ul>
 
-    <!-- Collapsible Navigation -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a
-            class="nav-link px-3"
-            routerLink="/consignments"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <i class="fas fa-tachometer-alt me-1"></i>
-            <span class="d-lg-inline d-md-none">Dashboard</span>
-          </a>
-        </li>
-
-        <!-- Booking -->
-        <li class="nav-item">
-          <a
-            class="nav-link px-3"
-            routerLink="/booking"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <i class="fas fa-plus-circle me-1"></i>
-            <span class="d-lg-inline d-md-none">Booking</span>
-          </a>
-        </li>
-
-        <!-- Client Management -->
-        <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/client" routerLinkActive="active">
-            <i class="fas fa-users me-1"></i>
-            <span class="d-lg-inline d-md-none">Clients</span>
-          </a>
-        </li>
-
-        <!-- Billings -->
-        <li class="nav-item">
-          <a
-            class="nav-link px-3"
-            routerLink="/billings"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <i class="fas fa-file-invoice me-1"></i>
-            <span class="d-lg-inline d-md-none">Billings</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- User Info and Logout -->
-      <div class="d-flex align-items-center">
-        <div class="navbar-text text-white me-3 d-none d-md-block">
-          <i class="fas fa-user-circle me-1"></i>
-          Welcome, <span class="fw-bold">Sushil</span>
-        </div>
-        
-        <!-- Logout Button -->
-        <button 
-          class="btn btn-outline-light btn-sm" 
-          type="button" 
-          (click)="logout()"
-          title="Logout"
-        >
-          <i class="fas fa-sign-out-alt me-1"></i>
-          <span class="d-none d-sm-inline">Logout</span>
-        </button>
-      </div>
+    <div class="d-flex align-items-center">
+      <span class="navbar-text text-white me-3">
+        <i class="fas fa-user-circle me-1"></i>Welcome, <span class="fw-bold">Sushil</span>
+      </span>
+      <button class="btn btn-outline-light btn-sm" (click)="logout()">
+        <i class="fas fa-sign-out-alt me-1"></i>Logout
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile Top Bar -->
+<nav class="mobile-topbar d-lg-none">
+  <div class="d-flex justify-content-between align-items-center p-3">
+    <button class="btn btn-primary" (click)="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a class="navbar-brand text-primary fw-bold" routerLink="/consignments">
+      <i class="fas fa-shipping-fast me-1"></i>ExpressWay
+    </a>
+    <button class="btn btn-outline-primary btn-sm" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Side Menu -->
+<div class="mobile-sidebar" [class.open]="isMobileMenuOpen">
+  <div class="sidebar-header">
+    <h5 class="text-white mb-0">
+      <i class="fas fa-shipping-fast me-2"></i>ExpressWay
+    </h5>
+    <button class="btn btn-link text-white p-0" (click)="closeMobileMenu()">
+      <i class="fas fa-times fa-lg"></i>
+    </button>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="user-info">
+      <i class="fas fa-user-circle me-2"></i>
+      <span>Welcome, <strong>Sushil</strong></span>
+    </div>
+    
+    <ul class="sidebar-nav">
+      <li>
+        <a routerLink="/consignments" routerLinkActive="active" (click)="closeMobileMenu()">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/booking" routerLinkActive="active" (click)="closeMobileMenu()">
+          <i class="fas fa-plus-circle"></i>
+          <span>Booking</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/client" routerLinkActive="active" (click)="closeMobileMenu()">
+          <i class="fas fa-users"></i>
+          <span>Clients</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/billings" routerLinkActive="active" (click)="closeMobileMenu()">
+          <i class="fas fa-file-invoice"></i>
+          <span>Billings</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>

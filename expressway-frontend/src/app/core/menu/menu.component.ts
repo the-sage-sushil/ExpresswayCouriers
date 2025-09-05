@@ -8,7 +8,17 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent {
+  isMobileMenuOpen = false;
+
   constructor(private router: Router) {}
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 
   logout() {
     sessionStorage.clear();
