@@ -16,6 +16,7 @@ import com.sushil.expressway.entitys.User;
 import com.sushil.expressway.models.AuthenticationRequest;
 import com.sushil.expressway.models.AuthenticationResponse;
 import com.sushil.expressway.models.RegistrationRequest;
+import com.sushil.expressway.repositories.RoleRepository;
 import com.sushil.expressway.repositories.TokenRepository;
 import com.sushil.expressway.repositories.UserRepository;
 import com.sushil.expressway.repositories.RefreshTokenRepository;
@@ -33,27 +34,31 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-
+    @Transactional
     public Integer registerUser(RegistrationRequest request) {
-
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+        
         User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail().toLowerCase())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(List.of(Role.builder().name("USER").build()))
-                .build();
+        .firstName(request.getFirstName())
+        .lastName(request.getLastName())
+        .email(request.getEmail().toLowerCase())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .roles(List.of(userRole))
+        .build();
         User savedUser = userRepository.save(user);
         Integer token = generateActivationToken(savedUser);
         return token;
     }
-
+    
+    @Transactional
     private Integer generateActivationToken(User savedUser) {
         int newToken = generateToken(6);
         Token token = Token.builder()

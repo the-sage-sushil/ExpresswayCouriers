@@ -27,7 +27,11 @@ public class UtilService {
         String url = "https://ebookingbackend.dtdc.in/serviceableDelivery?src=" + src + "&dst=" + Dest;
         return WebClient.get()
                 .uri(url)
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                .header("Accept", "application/json")
                 .retrieve()
+                .onStatus(status -> status.value() == 403,
+                    response -> Mono.error(new RuntimeException("DTDC API access forbidden - check API credentials")))
                 .bodyToMono(ServiceableResponse.class);
     }
 
@@ -36,11 +40,15 @@ public class UtilService {
         return WebClient
                 .post()
                 .uri(url)
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                .header("Content-Type", "application/json")
                 .bodyValue(request)
                 .retrieve()
+                .onStatus(status -> status.value() == 403,
+                    response -> Mono.error(new RuntimeException("DTDC API access forbidden - check API credentials")))
                 .bodyToMono(TatResponse.class)
                 .map(tatResponse -> tatResponse.getExplain().stream()
-                        .filter(ex -> !(ex instanceof String)) // keep only objects
+                        .filter(ex -> !(ex instanceof String))
                         .findFirst());
     }
 

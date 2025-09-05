@@ -10,6 +10,7 @@ import { ClientList } from './components/client/client';
 import { ClientCreate } from './components/client/create/client-create';
 import { ClientEdit } from './components/client/edit/client-edit';
 import { InvoiceGeneratorComponent } from './components/invoice-generator/invoice-generator.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -26,30 +27,37 @@ export const routes: Routes = [
   },
   {
     path: 'consignments',
-    component: ConsignmentList
+    component: ConsignmentList,
+    canActivate: [authGuard]
   },
   {
     path: 'booking',
-    component: ConsignmentBooking
+    component: ConsignmentBooking,
+    canActivate: [authGuard]
   },
   {
     path: 'billings',
-    component: InvoiceGeneratorComponent
+    component: InvoiceGeneratorComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'client',
-    component: ClientList
+    component: ClientList,
+    canActivate: [authGuard]
   },
   {
     path: 'client/new',
-    component: ClientCreate
+    component: ClientCreate,
+    canActivate: [authGuard]
   },
   { path: 'client/edit/:id',
-    component: ClientEdit 
+    component: ClientEdit,
+    canActivate: [authGuard]
   },
   {
     path: 'invoice',
-    component: InvoiceGeneratorComponent
+    component: InvoiceGeneratorComponent,
+    canActivate: [authGuard]
   },
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
