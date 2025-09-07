@@ -11,7 +11,7 @@ export class MenuComponent {
   isMobileMenuOpen = false;
 
   constructor(private router: Router) {}
-
+  loggedInUser = JSON.parse(sessionStorage.getItem('user') || '{}');
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }

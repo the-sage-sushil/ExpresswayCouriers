@@ -8,6 +8,7 @@ export interface AuthenticationRequest {
 export interface AuthenticationResponse {
   token?: string; // Keep for backward compatibility
   accessToken: string;
+  user: Object;
   message: string;
 }
 

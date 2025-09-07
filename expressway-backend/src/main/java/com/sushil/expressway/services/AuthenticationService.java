@@ -120,6 +120,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .message("Login successful")
+                .user(user)
                 .build();
     }
 

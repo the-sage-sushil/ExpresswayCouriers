@@ -10,6 +10,7 @@ import { ClientList } from './components/client/client';
 import { ClientCreate } from './components/client/create/client-create';
 import { ClientEdit } from './components/client/edit/client-edit';
 import { InvoiceGeneratorComponent } from './components/invoice-generator/invoice-generator.component';
+import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -57,6 +58,11 @@ export const routes: Routes = [
   {
     path: 'invoice',
     component: InvoiceGeneratorComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'analytics',
+    component: AnalyticsComponent,
     canActivate: [authGuard]
   },
 

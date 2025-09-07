@@ -37,6 +37,7 @@ export class AuthenticationService {
           this.isAuthenticatedSubject.next(true);
           this.scheduleTokenRefresh();
         }
+        sessionStorage.setItem('user', JSON.stringify(response.user));
       })
     );
   }

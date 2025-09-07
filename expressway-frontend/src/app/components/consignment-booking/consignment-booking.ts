@@ -105,6 +105,7 @@ export class ConsignmentBooking {
         .get('senderName')
         ?.setValue(this.consignmentForm.get('senderName')?.value.name);
     }
+    debugger;
     const consignmentData: ConsignmentRequest = this.consignmentForm.value;
 
     this.consignmentService.saveConsignment(consignmentData).subscribe({
@@ -156,6 +157,7 @@ export class ConsignmentBooking {
   }
 
   onSenderNameChange(selected: any) {
+    debugger;
     if (typeof selected === 'object' && selected !== null) {
       this.selectedClient.set(selected);
 
@@ -167,6 +169,7 @@ export class ConsignmentBooking {
     } else {
       // It's a custom value (string) --> clear
       this.consignmentForm.patchValue({
+        senderName: selected.value,
         senderContact: '',
         senderAddress: '',
       });
