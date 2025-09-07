@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invoice</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        color: #333;
+      }
+      header {
+        display: flex;
+        justify-content: space-between; /* pushes left + right apart */
+        align-items: flex-start; /* align to top */
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      header > div {
+        width: 48%; /* ensures two columns */
+      }
+
+      header img {
+        height: 60px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .client-info,
+      .bill-info {
+        margin-top: 20px;
+      }
+      .bill-info {
+        text-align: right;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        font-size: 12px;
+      }
+      th {
+        background: #f2f2f2;
+        text-align: center;
+      }
+      tr:nth-child(even) {
+        background: #fafafa;
+      }
+      .summary {
+        width: 100%; /* full width like above table */
+        margin-top: 2px;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .summary td {
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        text-align: right; /* center align all cells */
+      }
+
+      .summary tr td:first-child {
+        font-weight: bold;
+      }
+
+      .summary tr.grand-total td {
+        font-weight: bold;
+        font-size: 13px;
+        border-top: 2px solid #000;
+        background: #f9f9f9;
+      }
+      .grand-total {
+        font-weight: bold;
+        border-top: 2px solid #000;
+      }
+      footer {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 11px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <table
+      style="width: 100%; border-bottom: 2px solid #000; margin-bottom: 20px"
+    >
+      <tr>
+        <!-- Left Column -->
+        <td style="width: 60%; vertical-align: top; border: none; text-align: left">
+            <img src="expresswayCourier.png" alt="Company Logo" style="height: 60px" />
+            <p style="margin: 0; font-size: 22px">
+                EXPRESSWAY COURIER SERVICES
+            </p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.4">
+            123 Business Park, Mumbai - 400001<br />
+            Phone: +91-9876543210 | Email: info@expressway.com
+          </p>
+        </td>
+
+        <!-- Right Column -->
+        <td style="width: 40%; vertical-align: top; border: none; text-align: right">
+          <p><strong>Invoice</strong></p>
+          <p>
+            Bill Period: <span th:text="${fromDate}"></span> to
+            <span th:text="${toDate}"></span>
+          </p>
+          <p>Bill No: <span th:text="${billNo}"></span></p>
+          <p>Date: <span th:text="${invoiceDate}"></span></p>
+        </td>
+      </tr>
+    </table>
+
+    <div class="client-info">
+      <p><strong>BILL TO:</strong></p>
+      <p th:text="${client.name}"></p>
+      <p th:text="${client.address}"></p>
+      <p>GST No: <span th:text="${igst}"></span></p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>SRNO</th>
+          <th>DATE</th>
+          <th>C.NOTE</th>
+          <th>DESTINATION</th>
+          <th>MODE</th>
+          <th>D/S</th>
+          <th>WEIGHT</th>
+          <th>AMOUNT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="c, stat : ${consignments}">
+          <td th:text="${stat.count}"></td>
+          <td th:text="${c.bookingDate}"></td>
+          <td th:text="${c.trackingNumber}"></td>
+          <td th:text="${c.receiverAddress}"></td>
+          <td th:text="${c.serviceType}"></td>
+          <td th:text="${c.serviceType}"></td>
+          <td th:text="${c.weight + ' kg'}"></td>
+          <td th:text="${c.totalAmount}"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7" style="text-align: right">Bill Amount</td>
+          <td th:text="${billAmount}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">Fuel Surcharge 40%</td>
+          <td th:text="${fuelSurcharge}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">Other Charges</td>
+          <td th:text="${otherCharges}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">Sub Total</td>
+          <td th:text="${subTotal}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">SGST @ 9%</td>
+          <td th:text="${sgst}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">CGST @ 9%</td>
+          <td th:text="${cgst}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">IGST @ 18%</td>
+          <td th:text="${igst}"></td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right">GRAND TOTAL</td>
+          <td th:text="${grandTotal}"></td>
+        </tr>
+        <tr>
+          <td th:text="${grandTotalInWords}" colspan="8" style="text-align: center">GRAND TOTAL</td>
+        </tr>
+					
+
+      </tfoot>
+    </table>
+
+<footer style="margin-top:30px; font-size:11px; color:#555; line-height:1.5; border-top:1px solid #ccc; padding-top:10px;">
+  <p style="margin:4px 0;">
+    1. Payment by A/C Payee Cheques only favouring <strong>EXPRESSWAY COURIER SERVICES</strong>
+  </p>
+  <p style="margin:4px 0;">
+    2. Kindly indicate the Bill No. &amp; Date on the reverse of the Cheque.
+  </p>
+  <p style="margin:4px 0;">
+    3. In case of cash payment, demand receipt within 2 days from our authorised representative.
+  </p>
+  <p style="margin:4px 0;">
+    4. If payment is not made on or before due date, the balance will be subject to 24% P.A. interest.
+  </p>
+  <p style="margin:4px 0;">
+    5. Any discrepancy regarding this bill must be notified within one week from receipt.
+  </p>
+  <p style="margin:6px 0; font-weight:bold;">
+    GST NO.: 27ATOPM3117D1ZS 
+  </p>
+  <p style="margin:6px 0; font-weight:bold;">
+    PAN NO.: ATOPM3117D
+  </p>
+  <p style="margin-top:10px; font-size:12px; font-weight:bold; text-align:center; color:#333;">
+    THANK YOU FOR YOUR BUSINESS!
+  </p>
+</footer>
+
+  </body>
+</html>

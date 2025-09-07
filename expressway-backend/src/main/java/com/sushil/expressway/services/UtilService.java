@@ -66,27 +66,27 @@ public class UtilService {
             "Sixty", "Seventy", "Eighty", "Ninety"
     };
 
-    private static String convertBelowThousand(int number) {
+    private static String convertBelowThousand(double number) {
         StringBuilder result = new StringBuilder();
 
         if (number >= 100) {
-            result.append(units[number / 100]).append(" Hundred ");
+            result.append(units[(int) (number / 100)]).append(" Hundred ");
             number %= 100;
         }
 
         if (number >= 20) {
-            result.append(tens[number / 10]).append(" ");
+            result.append(tens[(int) (number / 10)]).append(" ");
             number %= 10;
         }
 
         if (number > 0) {
-            result.append(units[number]).append(" ");
+            result.append(units[(int) number]).append(" ");
         }
 
         return result.toString().trim();
     }
 
-    public static String convert(int number) {
+    public static String convert(Double number) {
         if (number == 0) {
             return "Zero";
         }
