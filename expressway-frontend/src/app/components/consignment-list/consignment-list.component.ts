@@ -120,8 +120,12 @@ saveEdit() {
 
     this.consignmentService.getBookings(filterParams).subscribe({
       next: (consignments: Consignment[]) => {
-        this.consignmentResponse = consignments;
-        // debugger;
+        // Sort consignments by bookingDate in descending order (latest first)
+        this.consignmentResponse = consignments.sort((a, b) => {
+          const dateA = new Date(a.bookingDate).getTime();
+          const dateB = new Date(b.bookingDate).getTime();
+          return dateB - dateA;
+        });
       },
     });
   }

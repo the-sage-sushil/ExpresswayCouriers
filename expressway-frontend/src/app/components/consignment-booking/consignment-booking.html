@@ -122,7 +122,7 @@
 
                   <!-- ✅ Check icon inside input box -->
                   <i
-                    *ngIf="isServiceableflag && isServiceable?.data?.serviceable === false"
+                    *ngIf="!isServiceableflag && isServiceable?.data?.serviceable === false"
                     class="fas fa-times-circle text-danger position-absolute"
                     style="
                       right: 10px;

@@ -82,6 +82,9 @@ export class ConsignmentBooking {
       destPincode: [null, Validators.required],
       weight: [,[Validators.required, Validators.min(0.1), Validators.max(50000)]],
       dimensions: ['1x1x1',[Validators.pattern(/^\d+x\d+x\d+$/)]],
+      length: [1, [Validators.required, Validators.min(1)]],
+      width: [1, [Validators.required, Validators.min(1)]],
+      height: [1, [Validators.required, Validators.min(1)]],
       totalAmount: [this.calculatedPrice(),[Validators.required, Validators.min(0)]],
       client: [null],
     });
@@ -96,7 +99,7 @@ export class ConsignmentBooking {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
-
+    debugger;
     if (this.consignmentForm.get('senderName')?.value.id) {
       this.consignmentForm
         .get('client')
@@ -105,7 +108,10 @@ export class ConsignmentBooking {
         .get('senderName')
         ?.setValue(this.consignmentForm.get('senderName')?.value.name);
     }
-    debugger;
+    else {
+      this.consignmentForm.get('client')?.setValue(null);
+      this.consignmentForm.get('senderName')?.setValue(this.consignmentForm.get('senderName')?.value['name']);
+    }
     const consignmentData: ConsignmentRequest = this.consignmentForm.value;
 
     this.consignmentService.saveConsignment(consignmentData).subscribe({
@@ -113,6 +119,13 @@ export class ConsignmentBooking {
         this.successMessage = `Consignment created successfully! Tracking ID: ${response}`;
         this.consignmentForm.reset();
         this.isLoading = false;
+        // Save the success message to sessionStorage
+        sessionStorage.setItem('successMessage', this.successMessage);
+        // Wait for 2 seconds before reloading
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+
       },
       error: (error) => {
         this.errorMessage =
@@ -139,13 +152,23 @@ export class ConsignmentBooking {
               ')',
           );
       });
-      this.dtdc.getTatDetails(Number(pincode)).subscribe((resposne) => {
-        this.tatResponse = resposne;
-        this.locationType.set(
-          locationTypes.find(
-            (key) => key.label === resposne.destinationType.name,
-          )?.value || '',
-        );
+      this.dtdc.getTatDetails(Number(pincode)).subscribe({
+        next: (resposne) => {
+          this.tatResponse = resposne;
+          this.locationType.set(
+            locationTypes.find(
+              (key) => key.label === resposne.destinationType.name,
+            )?.value || '',
+          );
+        },
+        error: (error) => {
+          debugger;
+          this.tatResponse = undefined;
+          this.locationType.set('');
+          this.isServiceableflag = false;
+          // Optionally, set an error message or handle UI feedback here
+          console.error('Failed to fetch TAT details:', error);
+        }
       });
     } else {
       this.isServiceableflag = false; // hide icons again if input is too short
@@ -157,7 +180,6 @@ export class ConsignmentBooking {
   }
 
   onSenderNameChange(selected: any) {
-    debugger;
     if (typeof selected === 'object' && selected !== null) {
       this.selectedClient.set(selected);
 
