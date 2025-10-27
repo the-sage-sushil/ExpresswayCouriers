@@ -18,19 +18,16 @@ import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-@Getter
-@Setter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
 
-    
     @Id
     @GeneratedValue
     private Integer id;

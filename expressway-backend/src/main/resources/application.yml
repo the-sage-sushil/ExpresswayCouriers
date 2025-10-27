@@ -9,5 +9,7 @@ spring:
 springdoc:
   default-produces-media-type: application/json
 server:
+  dtdc:
+    check-serviceable: https://ebookingbackend.dtdc.in/serviceableDelivery?
   servlet:
     context-path: /api/v1/

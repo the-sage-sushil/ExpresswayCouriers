@@ -1,0 +1,88 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center mb-0">Generate Invoice</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="successMessage" role="alert">
+            {{ successMessage }}
+          </div>
+
+          <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+            {{ errorMessage }}
+          </div>
+
+          <form [formGroup]="invoiceForm" (ngSubmit)="generateInvoice()">
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="border-bottom pb-2">Invoice Details</h5>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label class="form-label" for="client">Select Client</label>
+                <ng-select
+                  id="client"
+                  [class.is-invalid]="client?.invalid && client?.touched"
+                  formControlName="client"
+                  [items]="clients"
+                  bindLabel="name"
+                  [clearable]="false"
+                  placeholder="Select a client"
+                >
+                  <ng-template ng-option-tmp let-item="item">{{item.name}}</ng-template>
+                </ng-select>
+                <div *ngIf="client?.invalid && client?.touched" class="invalid-feedback d-block">
+                  Client selection is required
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="fromDate" class="form-label">From Date *</label>
+                <input
+                  formControlName="fromDate"
+                  type="date"
+                  class="form-control"
+                  id="fromDate"
+                  [class.is-invalid]="fromDate?.invalid && fromDate?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="fromDate?.invalid && fromDate?.touched">
+                  <small>From date is required</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="toDate" class="form-label">To Date *</label>
+                <input
+                  formControlName="toDate"
+                  type="date"
+                  class="form-control"
+                  id="toDate"
+                  [class.is-invalid]="toDate?.invalid && toDate?.touched"
+                />
+                <div class="invalid-feedback" *ngIf="toDate?.invalid && toDate?.touched">
+                  <small>To date is required</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row">
+              <div class="col-12 d-flex justify-content-end">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="loading || invoiceForm.invalid"
+                >
+                  <span class="spinner-border spinner-border-sm me-2" *ngIf="loading"></span>
+                  {{ loading ? 'Generating...' : 'Generate Invoice' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

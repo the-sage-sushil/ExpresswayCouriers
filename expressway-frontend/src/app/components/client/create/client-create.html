@@ -1,0 +1,149 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h3>Create New Client</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="clientForm" (ngSubmit)="submit()">
+      <div class="pricing-section mt-4">
+        <h4 class="mb-3">Client Details</h4>
+          <div class="mb-4">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('name')?.touched &&
+                  clientForm.get('name')?.invalid
+                "
+                class="text-danger"
+              >
+                Client name is required and must be ≥ 0.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('email')?.touched &&
+                  clientForm.get('email')?.invalid
+                "
+                class="text-danger"
+              >
+                Client Email is required and must be ≥ 0.
+              </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Contact Number</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="contactNumber"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('contactNumber')?.touched &&
+                  clientForm.get('contactNumber')?.invalid
+                "
+                class="text-danger"
+              >
+                Client contactNumber is required and must be ≥ 0.
+              </div>
+            </div>
+
+            
+            <div class="col-md-8 mb-3">
+              <label class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="address"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('address')?.touched &&
+                  clientForm.get('address')?.invalid
+                "
+                class="text-danger"
+              >
+                Client address is required and must be ≥ 0.
+              </div>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Contact Person</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="contactPerson"
+              />
+              <div
+                *ngIf="
+                  clientForm.get('contactPerson')?.touched &&
+                  clientForm.get('contactPerson')?.invalid
+                "
+                class="text-danger"
+              >
+                Client contactPerson is required and must be ≥ 0.
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="pricing-section mt-4">
+      </div>
+        <h4 class="mb-3">Pricing Details</h4>
+        <div *ngFor="let category of pricingCategories" class="mb-4">
+          <div class="category-title">{{ category.label }}</div>
+          <div class="row">
+            <div class="col-md-4 mb-3" *ngFor="let item of category.items">
+              <label class="form-label">{{ item.label }}</label>
+              <input
+                type="number"
+                class="form-control"
+                [formControlName]="item.controlName"
+              />
+              <div
+                *ngIf="
+                  clientForm.get(item.controlName)?.touched &&
+                  clientForm.get(item.controlName)?.invalid
+                "
+                class="text-danger"
+              >
+                {{ item.label }} is required and must be ≥ 0.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button
+          class="btn btn-success"
+          type="submit"
+          [disabled]="loading || clientForm.invalid"
+        >
+          {{ loading ? "Submitting..." : "Create Client" }}
+        </button>
+        <a routerLink="/client" class="btn btn-secondary">Cancel</a>
+      </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

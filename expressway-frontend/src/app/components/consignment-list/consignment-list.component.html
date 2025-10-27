@@ -1,0 +1,274 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+          <h3>Consignment List</h3>
+        </div>
+        <div class="card-body">
+          <!-- Filter Row -->
+          <form (ngSubmit)="applyFilters()" class="mb-3">
+            <div class="row g-2">
+              <div class="col-md-2">
+                <select
+                  [(ngModel)]="filters.clientId"
+                  (ngModelChange)="applyFilters()"
+                  name="clientId"
+                  class="form-control"
+                >
+                  <option value="" disabled selected>Select Client</option>
+                  <option *ngFor="let type of clients" [value]="type.id">
+                    {{ type.name }}
+                  </option>
+                </select>
+              </div>
+              <!-- <div class="col-md-2">
+                <input type="text" [(ngModel)]="filters.status" name="status" placeholder="Status" class="form-control">
+              </div> -->
+              <div class="col-md-2">
+                <select
+                  [(ngModel)]="filters.serviceType"
+                  (ngModelChange)="applyFilters()"
+                  name="serviceType"
+                  class="form-control"
+                >
+                  <option value="" disabled selected>Select Service Type</option>
+                  <option
+                    *ngFor="let type of serviceTypes"
+                    [value]="type.value"
+                  >
+                    {{ type.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  [(ngModel)]="filters.channelPartner"
+                  (ngModelChange)="applyFilters()"
+                  name="channelPartner"
+                  placeholder="Channel Partner"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="date"
+                  [(ngModel)]="filters.bookingDateFrom"
+                  (ngModelChange)="applyFilters()"
+                  name="bookingDateFrom"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="date"
+                  [(ngModel)]="filters.bookingDateTo"
+                  (ngModelChange)="applyFilters()"
+                  name="bookingDateTo"
+                  class="form-control"
+                />
+              </div>
+              <!-- <div class="col-md-2">
+                <input type="number" [(ngModel)]="filters.minWeight" name="minWeight" placeholder="Min Weight" class="form-control">
+              </div>
+              <div class="col-md-2">
+                <input type="number" [(ngModel)]="filters.maxWeight" name="maxWeight" placeholder="Max Weight" class="form-control">
+              </div> -->
+              <!-- <div class="col-md-2">
+                <input type="text" [(ngModel)]="filters.paymentMode" name="paymentMode" placeholder="Payment Mode" class="form-control">
+              </div> -->
+              <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">
+                  Search
+                </button>
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-secondary w-100"
+                  (click)="resetFilters()"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- No data -->
+          <div
+            *ngIf="consignmentResponse?.length === 0"
+            class="alert text-bg-danger"
+          >
+            No consignments found!.
+          </div>
+
+          <!-- Data Table -->
+          <div *ngIf="consignmentResponse">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Booking Date</th>
+                    <th>Tracking Number</th>
+                    <th>Channel Partner</th>
+                    <th>Service Type</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Destination</th>
+                    <th>Weight (kg)</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let consignment of consignmentResponse">
+                    <!-- Booking Date -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.bookingDate | date: "mediumDate" }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="date"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.bookingDate"
+                      />
+                    </td>
+
+                    <!-- Tracking Number -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.trackingNumber }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.trackingNumber"
+                      />
+                    </td>
+
+                    <!-- Channel Partner -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.chennalPatner.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.chennalPatner"
+                      />
+                    </td>
+
+                    <!-- Service Type -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.serviceType.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <select
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.serviceType"
+                      >
+                        <option
+                          *ngFor="let type of serviceTypes"
+                          [value]="type.value"
+                        >
+                          {{ type.label }}
+                        </option>
+                      </select>
+                    </td>
+
+                    <!-- Sender Name -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.senderName.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.senderName"
+                      />
+                    </td>
+
+                    <!-- Receiver Name -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.receiverName.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.receiverName"
+                      />
+                    </td>
+
+                    <!-- Destination -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.receiverAddress.toUpperCase() }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.receiverAddress"
+                      />
+                    </td>
+
+                    <!-- Weight -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.weight }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.weight"
+                      />
+                    </td>
+
+                    <!-- Total Amount -->
+                    <td *ngIf="editedRowId !== consignment.id">
+                      {{ consignment.totalAmount | currency: "INR" }}
+                    </td>
+                    <td *ngIf="editedRowId === consignment.id">
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="editableConsignment.totalAmount"
+                      />
+                    </td>
+
+                    <!-- Action Buttons -->
+                    <td>
+                      <div *ngIf="editedRowId !== consignment.id">
+                        <button
+                          class="btn btn-sm btn-primary"
+                          (click)="startEdit(consignment)"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                      <div *ngIf="editedRowId === consignment.id">
+                        <button
+                          class="btn btn-sm btn-success me-2"
+                          (click)="saveEdit()"
+                        >
+                          Save
+                        </button>
+                        <button
+                          class="btn btn-sm btn-secondary"
+                          (click)="cancelEdit()"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

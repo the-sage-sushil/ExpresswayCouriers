@@ -1,0 +1,124 @@
+.register-wrapper {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.card {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.card-header {
+  border-bottom: none;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+}
+
+.form-control {
+  border-radius: 0.5rem;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-link {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.alert {
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.form-label {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+/* Password Criteria Styling */
+.password-criteria {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #e9ecef;
+}
+
+.criteria-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+.missing-criteria {
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  padding: 0.2rem 0;
+}
+
+.met-criteria {
+  border-top: 1px solid #dee2e6;
+  padding-top: 0.5rem;
+}
+
+.met-criteria small {
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+}
+
+.criteria-list i {
+  width: 16px;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin: 1rem;
+  }
+  
+  .card-body {
+    padding: 2rem 1.5rem !important;
+  }
+  
+  .row .col-md-6 {
+    margin-bottom: 1rem;
+  }
+}
